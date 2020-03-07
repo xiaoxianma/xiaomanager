@@ -1,5 +1,7 @@
 {
   "name": "xiaomanager",
+  "version": "0.1.0",
+  "description": "this is only for Heroku to build frontend use",
   "scripts": {
     "heroku-prebuild": "NODE_ENV=production cd frontend/ && yarn install && yarn build && cd .."
   },
