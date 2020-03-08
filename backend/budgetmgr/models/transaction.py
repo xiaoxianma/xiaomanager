@@ -11,13 +11,19 @@ class Payment(models.Model):
 
 class ExpenseType(models.Model):
     '''such as restaurant, clothes, trave, etc.'''
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Merchant(models.Model):
     name = models.CharField(max_length=30)
     city = models.CharField(max_length=20, blank=True)
     country = CountryField(default='US')
+
+    def __str__(self):
+        return f"{self.name}|{self.city}|{self.country}"
 
 
 class Transaction(models.Model):
