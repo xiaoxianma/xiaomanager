@@ -24,10 +24,17 @@ class Institution(models.Model):
         return self.name
 
 
+class AccountOwner(models.Model):
+    name = models.CharField(max_length=10, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Account(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
     account_type = models.ForeignKey(AccountType, on_delete=models.DO_NOTHING)
-    owner = models.CharField(max_length=10, null=True)
+    owner = models.ForeignKey(AccountOwner, on_delete=models.DO_NOTHING)
     number = models.CharField(max_length=20, unique=True)
     alias = models.CharField(max_length=50, unique=True)
 

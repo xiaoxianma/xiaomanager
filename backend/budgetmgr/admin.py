@@ -6,6 +6,7 @@ from budgetmgr.models import account, transaction
 @admin.register(
     account.AccountType,
     account.Institution,
+    account.AccountOwner,
     account.Account,
     account.RewardType,
     account.Reward,
