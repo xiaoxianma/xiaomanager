@@ -14,7 +14,7 @@ class AccountType(models.Model):
     name = models.CharField(max_length=4, choices=Category.choices, unique=True)
 
     def __str__(self):
-        return self.name
+        return self.get_name_display()
 
 
 class Institution(models.Model):
@@ -27,11 +27,15 @@ class Institution(models.Model):
 class Account(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
     account_type = models.ForeignKey(AccountType, on_delete=models.DO_NOTHING)
+    owner = models.CharField(max_length=10, null=True)
     number = models.CharField(max_length=20, unique=True)
     alias = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
-        return self.alias
+        ret = f'{self.institution}|{self.account_type}|{self.owner}'
+        if self.alias:
+            ret = f'{ret}|{self.alias}'
+        return ret
 
 
 class RewardType(models.Model):
