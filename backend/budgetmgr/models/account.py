@@ -39,7 +39,7 @@ class Account(models.Model):
     alias = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
-        ret = f'{self.institution}|{self.account_type}|{self.owner}'
+        ret = f'{self.owner}|{self.institution}|{self.account_type}'
         if self.alias:
             ret = f'{ret}|{self.alias}'
         return ret
