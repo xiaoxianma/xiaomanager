@@ -62,7 +62,7 @@ class Reward(models.Model):
 
     def __str__(self):
         if self.end_time:
-            active_period = 'TBD'
+            active_period = f'{self.end_time.year}{self.end_time.month}'
         else:
             active_period = "4ever"
         return f"{self.account}|{active_period}|{self.reward_type}"
