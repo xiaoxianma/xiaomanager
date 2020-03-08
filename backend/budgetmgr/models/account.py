@@ -9,7 +9,7 @@ class AccountType(models.Model):
         DEBIT_CARD = 'DC', _('Debit Card')
         CASH = 'CASH', _('Cash')
         CHECKING = 'CK', _('Checking')
-        SAVING = 'SA', _('SAVING')
+        SAVING = 'SA', _('Saving')
 
     name = models.CharField(max_length=4, choices=Category.choices, unique=True)
 
