@@ -3,7 +3,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import PaymentIcon from '@material-ui/icons/Payment';
+import SubmitReportIcon from '@material-ui/icons/Send';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 
 
@@ -23,7 +23,7 @@ export const mainListItems = (
         </ListItem>
         <ListItem button>
             <ListItemIcon>
-                <PaymentIcon />
+                <SubmitReportIcon />
             </ListItemIcon>
             <ListItemText primary="Expense Submit" />
         </ListItem>
