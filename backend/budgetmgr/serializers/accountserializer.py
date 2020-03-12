@@ -5,3 +5,4 @@ from budgetmgr.models.account import Reward
 class RewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reward
+        fields = '__all__'
