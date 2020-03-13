@@ -39,3 +39,5 @@ class RewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reward
         fields = '__all__'
+        read_only_fields = ['account', 'reward_type']
+        depth = 3
