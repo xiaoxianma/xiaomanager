@@ -26,6 +26,10 @@ class AccountOwnerSerializer(serializers.ModelSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
+    institution = InstitutionSerializer(read_only=True)
+    account_type = AccountTypeSerializer(read_only=True)
+    owner = AccountOwnerSerializer(read_only=True)
+
     class Meta:
         model = Account
         exclude = ['id']
@@ -38,9 +42,11 @@ class RewardTypeSerializer(serializers.ModelSerializer):
 
 
 class RewardSerializer(serializers.ModelSerializer):
+    account = AccountSerializer(read_only=True)
+    reward_type = RewardTypeSerializer(read_only=True)
+
     class Meta:
         model = Reward
         exclude = ['id']
         read_only_fields = ['account', 'reward_type']
-        depth = 3
 
