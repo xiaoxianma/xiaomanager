@@ -37,7 +37,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
 class RewardTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        mode = RewardType
+        model = RewardType
         exclude = ['id']
 
 
