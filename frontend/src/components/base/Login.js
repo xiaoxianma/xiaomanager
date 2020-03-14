@@ -67,7 +67,7 @@ export default function Login() {
     }, [userAuth]);
 
     const handleLogin = () => {
-        axios.post(`${process.env.PUBLIC_URL}/api/token`, {username, password})
+        axios.post(`${process.env.PUBLIC_URL}/api/token/`, {username, password})
             .then(res => {
                 dispatch(setUserAuth({username, isAuthenticated: true, token: res.access}));
             })
@@ -85,7 +85,7 @@ export default function Login() {
     return (
         <form className={classes.container} noValidate autoComplete="off">
             <Card className={classes.card}>
-                <CardHeader className={classes.header} title="Login" />
+                <CardHeader className={classes.header} title="XiaoManager Login" />
                 <CardContent>
                     <div>
                         <TextField
