@@ -5,9 +5,8 @@ from budgetmgr.views.accountviews import RewardViewSet, ListCurrentRewards
 
 router = DefaultRouter()
 router.register('reward', RewardViewSet)
-
+router.register('current-rewards', ListCurrentRewards.as_view())
 
 urlpatterns = [
     url(r'', include(router.urls)),
-    url('current-rewards/', ListCurrentRewards.as_view()),
 ]
