@@ -8,7 +8,7 @@ import CreditCardIcon from '@material-ui/icons/CreditCard';
 
 
 export const mainListItems = (
-    <div>
+    <React.Fragment>
         <ListItem button>
             <ListItemIcon>
                 <DashboardIcon />
@@ -27,5 +27,5 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Expense Submit" />
         </ListItem>
-    </div>
+    </React.Fragment>
 );
