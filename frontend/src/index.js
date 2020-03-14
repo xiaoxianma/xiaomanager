@@ -6,15 +6,20 @@ import {Provider} from "react-redux";
 import {Route, Switch, BrowserRouter as Router} from 'react-router-dom';
 import store from "./redux/store";
 import * as serviceWorker from './serviceWorker';
+import Login from "./components/base/Login";
+import PrivateRoute from "./components/common/PrivateRoute";
 
 
 ReactDOM.render(
     <Provider store={store}>
         <Router>
             <Switch>
-                <Route exact path="/">
-                    <App/>
+                <Route path="/login">
+                    <Login/>
                 </Route>
+                <PrivateRoute exact path="/">
+                    <App/>
+                </PrivateRoute>
             </Switch>
         </Router>
     </Provider>,
