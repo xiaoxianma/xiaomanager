@@ -14,12 +14,8 @@ ReactDOM.render(
     <Provider store={store}>
         <Router>
             <Switch>
-                <Route exact path="/login">
-                    <Login/>
-                </Route>
-                <PrivateRoute exact path="/">
-                    <App/>
-                </PrivateRoute>
+                <Route exact path="/login"><Login/></Route>
+                <PrivateRoute exact path="/"><App/></PrivateRoute>
             </Switch>
         </Router>
     </Provider>,
