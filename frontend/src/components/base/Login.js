@@ -49,22 +49,17 @@ export default function Login() {
         } else {
             setIsButtonDisabled(true);
         }
-    }, [username, password]);
-
-    useEffect(() => {
-        if (!userAuth.username) return;
-        if (userAuth.isAuthenticated) {
+        if (userAuth.isAuthenticated === true) {
             console.log(`${userAuth.username} login successfully`);
             setError(false);
             setHelperText(`Welcome back ${userAuth.username}`);
             history.push('/');
-        } else {
+        } else if (userAuth.isAuthenticated === false) {
             console.log(`${userAuth.username} login failed`);
             setError(true);
             setHelperText('Incorrect username or password');
         }
-        // eslint-disable-next-line
-    }, [userAuth]);
+    }, [userAuth, username, password]);
 
     const handleLogin = () => {
         axios.post(`${process.env.PUBLIC_URL}/api/token/`, {username, password})
@@ -73,6 +68,7 @@ export default function Login() {
             })
             .catch(err => {
                 console.error(`Failed to authenticate ${username} | ${err}`);
+                dispatch(setUserAuth({username, isAuthenticated: false, token: ""}));
             });
     };
 
