@@ -8,6 +8,7 @@ import store from "./redux/store";
 import * as serviceWorker from './serviceWorker';
 import Login from "./components/base/Login";
 import PrivateRoute from "./components/common/PrivateRoute";
+import NotFound from "./components/common/NotFound";
 
 
 ReactDOM.render(
@@ -16,6 +17,7 @@ ReactDOM.render(
             <Switch>
                 <Route exact path="/login"><Login/></Route>
                 <PrivateRoute exact path="/"><App/></PrivateRoute>
+                <Route path="*"><NotFound/></Route>
             </Switch>
         </Router>
     </Provider>,

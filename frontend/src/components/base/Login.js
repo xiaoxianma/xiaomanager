@@ -59,6 +59,7 @@ export default function Login() {
             setError(true);
             setHelperText('Incorrect username or password');
         }
+        // eslint-disable-next-line
     }, [userAuth, username, password]);
 
     const handleLogin = () => {
