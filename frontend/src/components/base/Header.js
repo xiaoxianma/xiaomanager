@@ -8,7 +8,6 @@ import clsx from "clsx";
 import {Toolbar} from "@material-ui/core";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import {mainListItems} from './listItems';
@@ -102,8 +101,7 @@ export default function Header() {
     };
 
     return (
-        <div className={classes.root}>
-            <CssBaseline/>
+        <React.Fragment>
             <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
                     <IconButton
@@ -141,6 +139,6 @@ export default function Header() {
                 <List>{mainListItems}</List>
             </Drawer>
             <div className={classes.appBarSpacer} />
-        </div>
+        </React.Fragment>
     );
 }
