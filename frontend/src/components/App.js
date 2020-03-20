@@ -1,9 +1,9 @@
 import React from 'react';
-import XMAppBar from "./base/XMAppBar";
+import Header from "./base/Header";
 
 export default function App() {
     return (
-        <XMAppBar/>
+        <Header/>
     );
 };
 

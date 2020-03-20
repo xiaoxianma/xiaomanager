@@ -5,7 +5,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import clsx from "clsx";
-import {Container, Toolbar} from "@material-ui/core";
+import {Toolbar} from "@material-ui/core";
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -14,8 +14,6 @@ import List from "@material-ui/core/List";
 import {mainListItems} from './listItems';
 import Badge from "@material-ui/core/Badge";
 import Drawer from "@material-ui/core/Drawer";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 
 
 const drawerWidth = 240;
@@ -79,11 +77,6 @@ const useStyle = makeStyles(theme => ({
         },
     },
     appBarSpacer: theme.mixins.toolbar,
-    content: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-    },
     container: {
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
@@ -96,7 +89,7 @@ const useStyle = makeStyles(theme => ({
     },
 }));
 
-export default function XMAppBar() {
+export default function Header() {
     const classes = useStyle();
     const [open, setOpen] = useState(true);
 
@@ -107,8 +100,6 @@ export default function XMAppBar() {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
         <div className={classes.root}>
@@ -149,29 +140,7 @@ export default function XMAppBar() {
                 <Divider/>
                 <List>{mainListItems}</List>
             </Drawer>
-            <main className={classes.content}>
-                <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} md={8} lg={9}>
-                            <Paper className={fixedHeightPaper}>
-                                <div>part1</div>
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={12} md={4} lg={3}>
-                        <Paper className={fixedHeightPaper}>
-                            <div>part2</div>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Paper className={classes.paper}>
-                            <div>part3</div>
-                        </Paper>
-                    </Grid>
-                </Container>
-            </main>
+            <div className={classes.appBarSpacer} />
         </div>
-
     );
 }

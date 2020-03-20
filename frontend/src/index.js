@@ -9,14 +9,18 @@ import * as serviceWorker from './serviceWorker';
 import Login from "./components/base/Login";
 import PrivateRoute from "./components/common/PrivateRoute";
 import NotFound from "./components/common/NotFound";
+import CreditCardBenefits from "./components/budget/CreditCardBenefits";
+import DashBoard from "./components/budget/Dashboard";
 
 
 ReactDOM.render(
     <Provider store={store}>
+        <App/>
         <Router>
             <Switch>
                 <Route exact path="/login"><Login/></Route>
-                <PrivateRoute exact path="/"><App/></PrivateRoute>
+                <PrivateRoute exact path="/"><DashBoard/></PrivateRoute>
+                <PrivateRoute exact path="/ccbenefits"><CreditCardBenefits/></PrivateRoute>
                 <Route path="*"><NotFound/></Route>
             </Switch>
         </Router>
