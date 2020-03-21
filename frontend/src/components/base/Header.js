@@ -138,7 +138,7 @@ export default function Header() {
                 <Divider/>
                 <List>{mainListItems}</List>
             </Drawer>
-            <div className={classes.appBarSpacer} />
+            <div className={classes.appBarSpacer}/>
         </React.Fragment>
     );
 }

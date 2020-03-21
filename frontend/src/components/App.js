@@ -27,18 +27,18 @@ export default function App() {
 
     return (
         <div className={classes.root}>
-            <CssBaseline/>
-            <Header/>
-            <main className={classes.content}>
-                <Router>
+            <Router>
+                <CssBaseline/>
+                <Header/>
+                <main className={classes.content}>
                     <Switch>
                         <Route exact path="/login"><Login/></Route>
                         <PrivateRoute exact path="/"><DashBoard/></PrivateRoute>
                         <PrivateRoute exact path="/ccbenefits"><CreditCardBenefits/></PrivateRoute>
                         <Route path="*"><NotFound/></Route>
                     </Switch>
-                </Router>
-            </main>
+                </main>
+            </Router>
         </div>
     );
 };
