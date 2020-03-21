@@ -19,6 +19,7 @@ const useStyle = makeStyles(theme => ({
         height: '100vh',
         overflow: 'auto',
     },
+    appBarSpacer: theme.mixins.toolbar,
 }));
 
 
@@ -31,6 +32,7 @@ export default function App() {
                 <CssBaseline/>
                 <Header/>
                 <main className={classes.content}>
+                    <div className={classes.appBarSpacer}/>
                     <Switch>
                         <Route exact path="/login"><Login/></Route>
                         <PrivateRoute exact path="/"><DashBoard/></PrivateRoute>

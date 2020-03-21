@@ -18,9 +18,6 @@ import Drawer from "@material-ui/core/Drawer";
 const drawerWidth = 240;
 
 const useStyle = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-    },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(['width', 'margin'], {
@@ -75,7 +72,6 @@ const useStyle = makeStyles(theme => ({
             width: theme.spacing(9),
         },
     },
-    appBarSpacer: theme.mixins.toolbar,
     container: {
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
@@ -102,7 +98,7 @@ export default function Header() {
 
     return (
         <React.Fragment>
-            <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+            <AppBar position="fixed" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
                     <IconButton
                         edge="start"
@@ -138,7 +134,6 @@ export default function Header() {
                 <Divider/>
                 <List>{mainListItems}</List>
             </Drawer>
-            <div className={classes.appBarSpacer}/>
         </React.Fragment>
     );
 }
