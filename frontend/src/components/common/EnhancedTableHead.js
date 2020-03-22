@@ -26,6 +26,9 @@ const useStyles = makeStyles(theme => ({
         top: 20,
         width: 1,
     },
+    tableSortLabel: {
+        color: theme.palette.common.white,
+    }
 }));
 
 export default function EnhancedTableHead(props) {
@@ -45,6 +48,7 @@ export default function EnhancedTableHead(props) {
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
                         <TableSortLabel
+                            className={classes.tableSortLabel}
                             active={orderBy === headCell.id}
                             direction={orderBy === headCell.id ? order : 'asc'}
                             onClick={createSortHandler(headCell.id)}

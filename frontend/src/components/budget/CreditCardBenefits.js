@@ -26,7 +26,7 @@ export default function CreditCardBenefit() {
         {id: 'name',    numeric: false, label: 'Name'},
         {id: 'bank',    numeric: false, label: 'Bank'},
         {id: 'owner',   numeric: false, label: 'Owner'},
-        {id: 'xpoints', numeric: true, label: 'XPoints'},
+        {id: 'xpoints', numeric: true,  label: 'XPoints'},
         {id: 'start',   numeric: false, label: 'Start'},
         {id: 'end',     numeric: false, label: 'End'},
         {id: 'last4d',  numeric: false, label: 'Last4 Digits'},
