@@ -1,8 +1,11 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {makeStyles, withStyles} from "@material-ui/core/styles";
 import {Paper, TableBody, TableCell, TableContainer, TableRow} from "@material-ui/core";
 import TableHead from "@material-ui/core/TableHead";
 import Table from "@material-ui/core/Table";
+import axios from "axios";
+import {useSelector} from "react-redux";
+import {axiosGet} from "../../utils/axiosHelper";
 
 
 const useStyles = makeStyles(theme => ({
@@ -25,12 +28,35 @@ const StyledTableCell = withStyles(theme => ({
 
 export default function CreditCardBenefit() {
     const classes = useStyles();
-    const rows = [
-        {bank: 'BOA', name: 'cash reward', owner: 'weidong', reward: 'restaurant', xpoints: 3, start: '2020-3', end: 'null', last4digits: 9999},
-        {bank: 'Chase', name: 'freedom', owner: 'weidong', reward: 'restaurant', xpoints: 3, start: '2020-3', end: 'null', last4digits: 9999},
-        {bank: 'American Express', name: 'shopping card', owner: 'weidong', reward: 'restaurant', xpoints: 3, start: '2020-3', end: 'null', last4digits: 9999},
-        {bank: 'Discover', name: 'cash reward', owner: 'weidong', reward: 'restaurant', xpoints: 3, start: '2020-3', end: 'null', last4digits: 9999},
-    ];
+    const userAuth = useSelector(state => state.userAuth);
+    const [benefits, setBenefits] = useState([]);
+
+    useEffect(() => {
+        axiosGet("/api/budgetmgr/current-rewards/", userAuth.token)
+            .then(res => {
+                buildBenefitsData(res);
+            }).catch(err => {
+                console.error("Failed to fetch current rewards");
+            });
+    }, []);
+
+    const buildBenefitsData = data => {
+        const ret = [];
+        // eslint-disable-next-line array-callback-return
+        data.map(row => {
+            ret.push({
+                bank: row.account.institution.name,
+                name: row.account.alias,
+                owner: row.account.owner.name,
+                reward: row.reward_type.name,
+                xpoints: row.xpoints,
+                start: row.start_time,
+                end: row.end_time,
+                last4digits: row.acc.number.slice(-4),
+            })
+        });
+        setBenefits(ret);
+    };
 
     return (
         <TableContainer component={Paper}>
@@ -48,7 +74,7 @@ export default function CreditCardBenefit() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row, index) => (
+                    {benefits.map((row, index) => (
                         <TableRow key={index}>
                             <StyledTableCell>{row.reward}</StyledTableCell>
                             <StyledTableCell>{row.name}</StyledTableCell>
