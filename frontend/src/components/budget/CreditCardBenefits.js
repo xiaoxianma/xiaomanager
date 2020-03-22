@@ -15,17 +15,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const StyledTableCell = withStyles(theme => ({
-    head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    }
-}))(TableCell);
-
-
 export default function CreditCardBenefit() {
     const classes = useStyles();
     const userAuth = useSelector(state => state.userAuth);
@@ -58,14 +47,14 @@ export default function CreditCardBenefit() {
         // eslint-disable-next-line array-callback-return
         data.map(row => {
             ret.push({
-                bank: row.account.institution.name,
-                name: row.account.alias,
-                owner: row.account.owner.name,
-                reward: row.reward_type.name,
+                bank:    row.account.institution.name,
+                name:    row.account.alias,
+                owner:   row.account.owner.name,
+                reward:  row.reward_type.name,
                 xpoints: row.xpoints,
-                start: row.start_time,
-                end: row.end_time,
-                last4digits: row.account.number.slice(-4),
+                start:   row.start_time,
+                end:     row.end_time,
+                last4d:  row.account.number.slice(-4),
             })
         });
         setBenefits(ret);
@@ -91,14 +80,14 @@ export default function CreditCardBenefit() {
                         .map((row, index) => {
                             return (
                                 <TableRow hover key={index}>
-                                    <StyledTableCell>{row.reward}</StyledTableCell>
-                                    <StyledTableCell>{row.name}</StyledTableCell>
-                                    <StyledTableCell>{row.bank}</StyledTableCell>
-                                    <StyledTableCell>{row.owner}</StyledTableCell>
-                                    <StyledTableCell>{row.xpoints}</StyledTableCell>
-                                    <StyledTableCell>{row.start}</StyledTableCell>
-                                    <StyledTableCell>{row.end}</StyledTableCell>
-                                    <StyledTableCell>{row.last4digits}</StyledTableCell>
+                                    <TableCell>{row.reward}</TableCell>
+                                    <TableCell>{row.name}</TableCell>
+                                    <TableCell>{row.bank}</TableCell>
+                                    <TableCell>{row.owner}</TableCell>
+                                    <TableCell>{row.xpoints}</TableCell>
+                                    <TableCell>{row.start}</TableCell>
+                                    <TableCell>{row.end}</TableCell>
+                                    <TableCell>{row.last4d}</TableCell>
                                 </TableRow>
                             );
                         })

@@ -3,7 +3,15 @@ import TableCell from "@material-ui/core/TableCell";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles, withStyles} from "@material-ui/core/styles";
+
+
+const StyledTableCell = withStyles(theme => ({
+    head: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+    }
+}))(TableCell);
 
 
 const useStyles = makeStyles(theme => ({
@@ -32,7 +40,7 @@ export default function EnhancedTableHead(props) {
         <TableHead>
             <TableRow>
                 {headCells.map(headCell => (
-                    <TableCell
+                    <StyledTableCell
                         key={headCell.id}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
@@ -48,7 +56,7 @@ export default function EnhancedTableHead(props) {
                                 </span>
                             ) : null}
                         </TableSortLabel>
-                    </TableCell>
+                    </StyledTableCell>
                 ))}
             </TableRow>
         </TableHead>
