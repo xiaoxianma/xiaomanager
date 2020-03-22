@@ -53,7 +53,7 @@ export default function CreditCardBenefit() {
                 xpoints: row.xpoints,
                 start: row.start_time,
                 end: row.end_time,
-                last4digits: row.acc.number.slice(-4),
+                last4digits: row.account.number.slice(-4),
             })
         });
         setBenefits(ret);
