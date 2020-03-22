@@ -13,9 +13,8 @@ import List from "@material-ui/core/List";
 import {mainListItems} from './listItems';
 import Badge from "@material-ui/core/Badge";
 import Drawer from "@material-ui/core/Drawer";
+import {APP_BAR_HEIGHT, DRAWER_WIDTH} from "../utils/globalParams";
 
-
-const drawerWidth = 240;
 
 const useStyle = makeStyles(theme => ({
     appBar: {
@@ -24,10 +23,11 @@ const useStyle = makeStyles(theme => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+        height: APP_BAR_HEIGHT,
     },
     appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: DRAWER_WIDTH,
+        width: `calc(100% - ${DRAWER_WIDTH}px)`,
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
@@ -55,7 +55,7 @@ const useStyle = makeStyles(theme => ({
     drawerPaper: {
         position: 'relative',
         whiteSpace: 'nowrap',
-        width: drawerWidth,
+        width: DRAWER_WIDTH,
         transition: theme.transitions.create('width', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,

@@ -1,12 +1,6 @@
 import {SET_USER_AUTH} from "../../actions/auth/authActionTypes";
+import {initialState} from "../initialState";
 
-const initialState = {
-    auth: {
-        username: "",
-        isAuthenticated: null,
-        token: "",
-    }
-};
 
 export function userAuth(state = initialState.auth, action) {
     switch (action.type) {

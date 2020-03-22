@@ -1,14 +1,26 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {Paper, TableBody, TableCell, TableContainer, TableRow} from "@material-ui/core";
+import {CardContent, CardHeader, Paper, TableBody, TableCell, TableContainer, TableRow} from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import {useSelector} from "react-redux";
 import {axiosGet} from "../utils/axiosHelper";
 import EnhancedTableHead from "../common/EnhancedTableHead";
 import {getComparator, stableSort} from "../utils/tableSort";
+import Card from "@material-ui/core/Card";
+import cardHeaderColor from "@material-ui/core/colors/brown";
+import {APP_BAR_HEIGHT} from "../utils/globalParams";
 
 
 const useStyles = makeStyles(theme => ({
+    root: {
+        height: `calc(100% - ${APP_BAR_HEIGHT}px)`,
+    },
+    cardHeader: {
+        color: cardHeaderColor[300],
+    },
+    cardContent: {
+        paddingTop: 0,
+    },
     table: {
         minWidth: 650,
     }
@@ -22,14 +34,14 @@ export default function CreditCardBenefit() {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('reward');
     const headCells = [
-        {id: 'reward',  numeric: false, label: 'Reward'},
-        {id: 'name',    numeric: false, label: 'Name'},
-        {id: 'bank',    numeric: false, label: 'Bank'},
-        {id: 'owner',   numeric: false, label: 'Owner'},
-        {id: 'xpoints', numeric: true,  label: 'XPoints'},
-        {id: 'start',   numeric: false, label: 'Start'},
-        {id: 'end',     numeric: false, label: 'End'},
-        {id: 'last4d',  numeric: false, label: 'Last4 Digits'},
+        {id: 'reward', numeric: false, label: 'Reward'},
+        {id: 'name', numeric: false, label: 'Name'},
+        {id: 'bank', numeric: false, label: 'Bank'},
+        {id: 'owner', numeric: false, label: 'Owner'},
+        {id: 'xpoints', numeric: true, label: 'XPoints'},
+        {id: 'start', numeric: false, label: 'Start'},
+        {id: 'end', numeric: false, label: 'End'},
+        {id: 'last4d', numeric: false, label: 'Last4 Digits'},
     ];
 
     useEffect(() => {
@@ -37,8 +49,8 @@ export default function CreditCardBenefit() {
             .then(res => {
                 buildBenefitsData(res.data);
             }).catch(err => {
-                console.error(`Failed to fetch current rewards, ${err}`);
-            });
+            console.error(`Failed to fetch current rewards, ${err}`);
+        });
         // eslint-disable-next-line
     }, []);
 
@@ -47,14 +59,14 @@ export default function CreditCardBenefit() {
         // eslint-disable-next-line array-callback-return
         data.map(row => {
             ret.push({
-                bank:    row.account.institution.name,
-                name:    row.account.alias,
-                owner:   row.account.owner.name,
-                reward:  row.reward_type.name,
+                bank: row.account.institution.name,
+                name: row.account.alias,
+                owner: row.account.owner.name,
+                reward: row.reward_type.name,
                 xpoints: row.xpoints,
-                start:   row.start_time,
-                end:     row.end_time,
-                last4d:  row.account.number.slice(-4),
+                start: row.start_time,
+                end: row.end_time,
+                last4d: row.account.number.slice(-4),
             })
         });
         setBenefits(ret);
@@ -67,33 +79,41 @@ export default function CreditCardBenefit() {
     };
 
     return (
-        <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label="cc benfits">
-                <EnhancedTableHead
-                    order={order}
-                    orderBy={orderBy}
-                    onRequestSort={handleRequestSort}
-                    headCells={headCells}
-                />
-                <TableBody>
-                    {stableSort(benefits, getComparator(order, orderBy))
-                        .map((row, index) => {
-                            return (
-                                <TableRow hover key={index}>
-                                    <TableCell>{row.reward}</TableCell>
-                                    <TableCell>{row.name}</TableCell>
-                                    <TableCell>{row.bank}</TableCell>
-                                    <TableCell>{row.owner}</TableCell>
-                                    <TableCell>{row.xpoints}</TableCell>
-                                    <TableCell>{row.start}</TableCell>
-                                    <TableCell>{row.end}</TableCell>
-                                    <TableCell>{row.last4d}</TableCell>
-                                </TableRow>
-                            );
-                        })
-                    }
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <Card className={classes.root}>
+            <CardHeader
+                className={classes.cardHeader}
+                title="Credit Card Benefits Summary"
+            />
+            <CardContent className={classes.cardContent}>
+                <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="cc benfits">
+                        <EnhancedTableHead
+                            order={order}
+                            orderBy={orderBy}
+                            onRequestSort={handleRequestSort}
+                            headCells={headCells}
+                        />
+                        <TableBody>
+                            {stableSort(benefits, getComparator(order, orderBy))
+                                .map((row, index) => {
+                                    return (
+                                        <TableRow hover key={index}>
+                                            <TableCell>{row.reward}</TableCell>
+                                            <TableCell>{row.name}</TableCell>
+                                            <TableCell>{row.bank}</TableCell>
+                                            <TableCell>{row.owner}</TableCell>
+                                            <TableCell>{row.xpoints}</TableCell>
+                                            <TableCell>{row.start}</TableCell>
+                                            <TableCell>{row.end}</TableCell>
+                                            <TableCell>{row.last4d}</TableCell>
+                                        </TableRow>
+                                    );
+                                })
+                            }
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </CardContent>
+        </Card>
     );
 }
