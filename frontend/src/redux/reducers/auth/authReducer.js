@@ -3,7 +3,7 @@ import {SET_USER_AUTH} from "../../actions/auth/authActionTypes";
 const initialState = {
     auth: {
         username: "",
-        isAuthenticated: true,
+        isAuthenticated: null,
         token: "",
     }
 };
