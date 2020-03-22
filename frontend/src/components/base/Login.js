@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
 import {useHistory} from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core/styles";
@@ -10,6 +9,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import {useDispatch, useSelector} from "react-redux";
 import {setUserAuth} from "../../redux/actions/auth/authActions";
+import {axiosPost} from "../utils/axiosHelper";
 
 const useStyle = makeStyles(theme => ({
     container: {
@@ -63,7 +63,7 @@ export default function Login() {
     }, [userAuth, username, password]);
 
     const handleLogin = () => {
-        axios.post(`${process.env.PUBLIC_URL}/api/token/`, {username, password})
+        axiosPost('/api/token/', {username, password})
             .then(res => {
                 dispatch(setUserAuth({username, isAuthenticated: true, token: res.access}));
             })
