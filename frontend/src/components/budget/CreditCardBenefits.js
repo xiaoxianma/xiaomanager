@@ -42,6 +42,7 @@ export default function CreditCardBenefit() {
     }, []);
 
     const buildBenefitsData = data => {
+        console.log(data);
         const ret = [];
         // eslint-disable-next-line array-callback-return
         data.map(row => {
