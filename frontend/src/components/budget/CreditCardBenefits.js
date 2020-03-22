@@ -34,7 +34,7 @@ export default function CreditCardBenefit() {
         axios.get(`${process.env.PUBLIC_URL}/api/budgetmgr/current-rewards/`,
                  { headers: {"Authorization": `Bearer ${userAuth.token}`}})
             .then(res => {
-                buildBenefitsData(res);
+                buildBenefitsData(res.data);
             }).catch(err => {
                 console.error(`Failed to fetch current rewards, ${err}`);
             });
@@ -42,7 +42,6 @@ export default function CreditCardBenefit() {
     }, []);
 
     const buildBenefitsData = data => {
-        console.log(data);
         const ret = [];
         // eslint-disable-next-line array-callback-return
         data.map(row => {
