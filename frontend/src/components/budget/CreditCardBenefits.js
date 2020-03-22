@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles, withStyles} from "@material-ui/core/styles";
 import {Paper, TableBody, TableCell, TableContainer, TableRow} from "@material-ui/core";
-import TableHead from "@material-ui/core/TableHead";
 import Table from "@material-ui/core/Table";
 import {useSelector} from "react-redux";
-import axios from "axios";
+import {axiosGet} from "../utils/axiosHelper";
+import EnhancedTableHead from "../common/EnhancedTableHead";
+import {getComparator, stableSort} from "../utils/tableSort";
 
 
 const useStyles = makeStyles(theme => ({
@@ -29,10 +30,21 @@ export default function CreditCardBenefit() {
     const classes = useStyles();
     const userAuth = useSelector(state => state.userAuth);
     const [benefits, setBenefits] = useState([]);
+    const [order, setOrder] = useState('asc');
+    const [orderBy, setOrderBy] = useState('reward');
+    const headCells = [
+        {id: 'reward',  numeric: false, label: 'Reward'},
+        {id: 'name',    numeric: false, label: 'Name'},
+        {id: 'bank',    numeric: false, label: 'Bank'},
+        {id: 'owner',   numeric: false, label: 'Owner'},
+        {id: 'xpoints', numeric: true, label: 'XPoints'},
+        {id: 'start',   numeric: false, label: 'Start'},
+        {id: 'end',     numeric: false, label: 'End'},
+        {id: 'last4d',  numeric: false, label: 'Last4 Digits'},
+    ];
 
     useEffect(() => {
-        axios.get(`${process.env.PUBLIC_URL}/api/budgetmgr/current-rewards/`,
-                 { headers: {"Authorization": `Bearer ${userAuth.token}`}})
+        axiosGet("/api/budgetmgr/current-rewards/", userAuth.token)
             .then(res => {
                 buildBenefitsData(res.data);
             }).catch(err => {
@@ -59,34 +71,38 @@ export default function CreditCardBenefit() {
         setBenefits(ret);
     };
 
+    const handleRequestSort = (event, property) => {
+        const isAsc = orderBy === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy(property);
+    };
+
     return (
         <TableContainer component={Paper}>
             <Table className={classes.table} aria-label="cc benfits">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell>Reward</StyledTableCell>
-                        <StyledTableCell>Name</StyledTableCell>
-                        <StyledTableCell>Bank</StyledTableCell>
-                        <StyledTableCell>Owner</StyledTableCell>
-                        <StyledTableCell>XPoints</StyledTableCell>
-                        <StyledTableCell>Start</StyledTableCell>
-                        <StyledTableCell>End</StyledTableCell>
-                        <StyledTableCell>Last4 Digits</StyledTableCell>
-                    </TableRow>
-                </TableHead>
+                <EnhancedTableHead
+                    order={order}
+                    orderBy={orderBy}
+                    onRequestSort={handleRequestSort}
+                    headCells={headCells}
+                />
                 <TableBody>
-                    {benefits.map((row, index) => (
-                        <TableRow key={index}>
-                            <StyledTableCell>{row.reward}</StyledTableCell>
-                            <StyledTableCell>{row.name}</StyledTableCell>
-                            <StyledTableCell>{row.bank}</StyledTableCell>
-                            <StyledTableCell>{row.owner}</StyledTableCell>
-                            <StyledTableCell>{row.xpoints}</StyledTableCell>
-                            <StyledTableCell>{row.start}</StyledTableCell>
-                            <StyledTableCell>{row.end}</StyledTableCell>
-                            <StyledTableCell>{row.last4digits}</StyledTableCell>
-                        </TableRow>
-                    ))}
+                    {stableSort(benefits, getComparator(order, orderBy))
+                        .map((row, index) => {
+                            return (
+                                <TableRow hover key={index}>
+                                    <StyledTableCell>{row.reward}</StyledTableCell>
+                                    <StyledTableCell>{row.name}</StyledTableCell>
+                                    <StyledTableCell>{row.bank}</StyledTableCell>
+                                    <StyledTableCell>{row.owner}</StyledTableCell>
+                                    <StyledTableCell>{row.xpoints}</StyledTableCell>
+                                    <StyledTableCell>{row.start}</StyledTableCell>
+                                    <StyledTableCell>{row.end}</StyledTableCell>
+                                    <StyledTableCell>{row.last4digits}</StyledTableCell>
+                                </TableRow>
+                            );
+                        })
+                    }
                 </TableBody>
             </Table>
         </TableContainer>
