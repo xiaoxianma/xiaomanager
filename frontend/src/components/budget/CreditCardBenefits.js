@@ -3,9 +3,8 @@ import {makeStyles, withStyles} from "@material-ui/core/styles";
 import {Paper, TableBody, TableCell, TableContainer, TableRow} from "@material-ui/core";
 import TableHead from "@material-ui/core/TableHead";
 import Table from "@material-ui/core/Table";
-import axios from "axios";
 import {useSelector} from "react-redux";
-import {axiosGet} from "../../utils/axiosHelper";
+import {axiosGet} from "../utils/axiosHelper";
 
 
 const useStyles = makeStyles(theme => ({
@@ -38,6 +37,7 @@ export default function CreditCardBenefit() {
             }).catch(err => {
                 console.error("Failed to fetch current rewards");
             });
+        // eslint-disable-next-line
     }, []);
 
     const buildBenefitsData = data => {
