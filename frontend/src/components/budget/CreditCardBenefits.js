@@ -4,7 +4,7 @@ import {Paper, TableBody, TableCell, TableContainer, TableRow} from "@material-u
 import TableHead from "@material-ui/core/TableHead";
 import Table from "@material-ui/core/Table";
 import {useSelector} from "react-redux";
-import {axiosGet} from "../utils/axiosHelper";
+import axios from "axios";
 
 
 const useStyles = makeStyles(theme => ({
@@ -31,11 +31,12 @@ export default function CreditCardBenefit() {
     const [benefits, setBenefits] = useState([]);
 
     useEffect(() => {
-        axiosGet("/api/budgetmgr/current-rewards/", userAuth.token)
+        axios.get(`${process.env.PUBLIC_URL}/api/budgetmgr/current-rewards/`,
+                 { headers: {"Authorization": `Bearer ${userAuth.token}`}})
             .then(res => {
                 buildBenefitsData(res);
             }).catch(err => {
-                console.error("Failed to fetch current rewards");
+                console.error(`Failed to fetch current rewards, ${err}`);
             });
         // eslint-disable-next-line
     }, []);
