@@ -16,7 +16,6 @@ class BudgetMgrAccountAdmin(admin.ModelAdmin):
 
 
 @admin.register(
-    transaction.Payment,
     transaction.ExpenseType,
     transaction.Merchant,
     transaction.Transaction,

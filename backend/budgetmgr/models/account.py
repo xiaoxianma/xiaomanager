@@ -35,7 +35,7 @@ class Account(models.Model):
     institution = models.ForeignKey(Institution, on_delete=models.DO_NOTHING)
     account_type = models.ForeignKey(AccountType, on_delete=models.DO_NOTHING)
     owner = models.ForeignKey(AccountOwner, on_delete=models.DO_NOTHING)
-    number = models.CharField(max_length=20)
+    number = models.CharField(max_length=20, blank=True)
     alias = models.CharField(max_length=50, blank=True)
 
     def __str__(self):

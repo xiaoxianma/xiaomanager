@@ -1,12 +1,7 @@
 from django.db import models
-from budgetmgr.models.account import Account, Reward
+from budgetmgr.models.account import Account
 from django_countries.fields import CountryField
 from django.contrib.postgres.fields import ArrayField
-
-
-class Payment(models.Model):
-    account = models.ForeignKey(Account, on_delete=models.DO_NOTHING)
-    reward = models.ForeignKey(Reward, on_delete=models.DO_NOTHING)
 
 
 class ExpenseType(models.Model):
@@ -28,7 +23,7 @@ class Merchant(models.Model):
 
 class Transaction(models.Model):
     amount = models.FloatField()
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.DO_NOTHING)
     merchant = models.ForeignKey(Merchant, on_delete=models.DO_NOTHING)
     expense_type = models.ForeignKey(ExpenseType, on_delete=models.DO_NOTHING)
     transaction_date = models.DateField()
