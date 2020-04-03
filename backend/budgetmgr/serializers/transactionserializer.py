@@ -13,13 +13,13 @@ logger = logging.getLogger(__name__)
 class ExpenseTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExpenseType
-        exclude = ['id']
+        fields = '__all__'
 
 
 class MerchantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Merchant
-        exclude = ['id']
+        fields = '__all__'
 
 
 class TransactionSerializer(serializers.ModelSerializer):
