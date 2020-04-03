@@ -13,11 +13,13 @@ logger = logging.getLogger(__name__)
 class ExpenseTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExpenseType
+        exclude = ['id']
 
 
 class MerchantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Merchant
+        exclude = ['id']
 
 
 class TransactionSerializer(serializers.ModelSerializer):
@@ -25,6 +27,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
+        exclude = ['id']
 
     def create(self, validated_data):
         logger.info(f"creating transaction")
