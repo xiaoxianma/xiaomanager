@@ -1,5 +1,6 @@
 import json
 from rest_framework import serializers
+from django.core.serializers.json import DjangoJSONEncoder
 from budgetmgr.models.transaction import (
     ExpenseType,
     Transaction,
@@ -31,7 +32,7 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         logger.info(f"creating transaction")
-        logger.info(json.dumps(validated_data, indent=4))
+        logger.info(json.dumps(validated_data, indent=4, cls=DjangoJSONEncoder))
         merchant = validated_data.pop('merchant')
         merchant_instance, created = Merchant.objects.get_or_create(**merchant)
         transaction_instance = Transaction.objects.create(**validated_data, merchant=merchant_instance)
