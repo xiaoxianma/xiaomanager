@@ -24,17 +24,18 @@ class MerchantSerializer(serializers.ModelSerializer):
 
 class TransactionSerializer(serializers.ModelSerializer):
     merchant = MerchantSerializer()
+    expense_type_name = serializers.ReadOnlyField(source='expense_type.name')
 
     class Meta:
         model = Transaction
-        # fields = ('id', 'amount', 'merchant', 'expense_type', 'transaction_date', 'coupon', 'tags', 'notes')
-        fields = '__all__'
+        fields = ('id', 'amount', 'merchant', 'expense_type', 'expense_type_name',
+                  'transaction_date', 'coupon', 'tags', 'notes')
 
     def create(self, validated_data):
         """
         "amount": 10.00,
         "transaction_date": "2020-04-01",
-        "account": 1,
+        "account": 2,
         "expense_type": 1,
         "merchant": {
             "name": "hmart",
