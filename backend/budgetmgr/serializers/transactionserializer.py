@@ -27,22 +27,22 @@ class MerchantSerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
-    merchant = MerchantSerializer
+    merchant = MerchantSerializer()
 
     class Meta:
         model = Transaction
-        fields = '__all__'
+        fields = ('id', 'amount', 'merchant', 'expense_type', 'transaction_date', 'coupon', 'tags', 'notes')
 
     def create(self, validated_data):
         """
-        'amount': 10.00,
-        'transaction_date': '2020-04-01',
-        'account': {'id': <id>},
-        'expense_type': {'id': <id>},
-        'merchant': {'name': <name>, 'city': null, 'country': null'},
-        'coupon': null,
-        'tags': [],
-        'notes: '',
+        "amount": 10.00,
+        "transaction_date": "2020-04-01",
+        "account": 1,
+        "expense_type": 1,
+        "merchant": {"name": "hmart"},
+        "coupon": null,
+        "tags": [],
+        "notes": ""
         """
         logger.info(f"creating transaction")
         logger.info(validated_data)
