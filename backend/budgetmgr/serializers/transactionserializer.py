@@ -32,7 +32,8 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         logger.info(f"creating transaction")
-        logger.info(validated_data, indent=4, sort_keys=True, default=str)
+        logger.info(validated_data)
+        logger.info(json.dumps(validated_data, indent=4, sort_keys=True, default=str))
         logger.info(json.dumps(validated_data, indent=4, cls=DjangoJSONEncoder))
         merchant = validated_data.pop('merchant')
         merchant_instance, created = Merchant.objects.get_or_create(**merchant)
