@@ -31,7 +31,8 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ('id', 'amount', 'merchant', 'expense_type', 'transaction_date', 'coupon', 'tags', 'notes')
+        # fields = ('id', 'amount', 'merchant', 'expense_type', 'transaction_date', 'coupon', 'tags', 'notes')
+        fields = '__all__'
 
     def create(self, validated_data):
         """
@@ -44,21 +45,12 @@ class TransactionSerializer(serializers.ModelSerializer):
         "tags": [],
         "notes": ""
         """
-        logger.info(f"creating transaction")
-        logger.info(validated_data)
-        logger.info(json.dumps(validated_data, indent=4, cls=DjangoJSONEncoder))
-
-        account = validated_data.pop('account')
-        account_id = int(account['id'])
-        expense_type = validated_data.pop('expense_type')
-        expense_type_id = int(expense_type['id'])
+        logger.info(f"creating transaction...")
+        logger.info(json.dumps(validated_data, indent=4, cls=str))
         merchant = validated_data.pop('merchant')
         merchant_instance, created = Merchant.objects.get_or_create(**merchant)
-
         transaction_instance = Transaction.objects.create(
             **validated_data,
             merchant=merchant_instance,
-            account_id=account_id,
-            expense_type_id=expense_type_id,
         )
         return transaction_instance
