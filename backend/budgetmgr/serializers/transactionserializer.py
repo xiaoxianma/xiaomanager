@@ -27,9 +27,12 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        exclude = ['id']
+        fields = '__all__'
 
     def create(self, validated_data):
         logger.info(f"creating transaction")
         logger.info(json.dumps(validated_data, indent=4))
-        return Transaction.objects.create(**validated_data)
+        merchant = validated_data.pop('merchant')
+        merchant_instance, created = Merchant.objects.get_or_create(**merchant)
+        transaction_instance = Transaction.objects.create(**validated_data, merchant=merchant_instance)
+        return transaction_instance
