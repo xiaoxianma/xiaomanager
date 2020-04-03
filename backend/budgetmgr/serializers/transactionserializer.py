@@ -1,13 +1,9 @@
 import json
 from rest_framework import serializers
-from django.core.serializers.json import DjangoJSONEncoder
 from budgetmgr.models.transaction import (
     ExpenseType,
     Transaction,
     Merchant,
-)
-from budgetmgr.models.account import (
-    Account,
 )
 import logging
 
@@ -40,7 +36,10 @@ class TransactionSerializer(serializers.ModelSerializer):
         "transaction_date": "2020-04-01",
         "account": 1,
         "expense_type": 1,
-        "merchant": {"name": "hmart"},
+        "merchant": {
+            "name": "hmart",
+            "city": ""
+        },
         "coupon": null,
         "tags": [],
         "notes": ""

@@ -1,6 +1,7 @@
 from django.conf.urls import url, include
 from rest_framework.routers import DefaultRouter
 from budgetmgr.views.accountviews import (
+    AccountViewSet,
     RewardViewSet,
     ListCurrentRewards,
 )
@@ -11,6 +12,7 @@ from budgetmgr.views.transactionviews import (
 
 
 router = DefaultRouter()
+router.register('accounts', AccountViewSet)
 router.register('rewards', RewardViewSet)
 router.register('expense-types', ExpenseTypeViewSet)
 router.register('transactions', TransactionViewSet)
