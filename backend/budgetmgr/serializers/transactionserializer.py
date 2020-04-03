@@ -45,7 +45,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         "notes": ""
         """
         logger.info(f"creating transaction...")
-        logger.info(json.dumps(validated_data, indent=4, cls=str))
+        logger.info(json.dumps(validated_data, indent=4, default=str))
         merchant = validated_data.pop('merchant')
         merchant_instance, created = Merchant.objects.get_or_create(**merchant)
         transaction_instance = Transaction.objects.create(
