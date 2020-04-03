@@ -28,19 +28,19 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ('id', 'amount', 'merchant', 'expense_type', 'expense_type_name',
+        fields = ('id', 'amount', 'account', 'merchant', 'expense_type', 'expense_type_name',
                   'transaction_date', 'coupon', 'tags', 'notes')
 
     def create(self, validated_data):
         """
         "amount": 10.00,
-        "transaction_date": "2020-04-01",
         "account": 2,
         "expense_type": 1,
         "merchant": {
             "name": "hmart",
             "city": ""
         },
+        "transaction_date": "2020-04-01",
         "coupon": null,
         "tags": [],
         "notes": ""
