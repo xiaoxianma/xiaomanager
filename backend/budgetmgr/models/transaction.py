@@ -18,7 +18,7 @@ class Merchant(models.Model):
     country = CountryField(default='US')
 
     def __str__(self):
-        return f"{self.name}|{self.city}|{self.country}"
+        return f"{self.name}|{self.city}|{self.country}".replace('||', '|')
 
 
 class Transaction(models.Model):
