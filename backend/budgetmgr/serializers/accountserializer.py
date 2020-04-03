@@ -32,7 +32,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        exclude = ['id']
+        fields = '__all__'
 
 
 class RewardTypeSerializer(serializers.ModelSerializer):

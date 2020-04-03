@@ -4,14 +4,24 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.db.models import Q
-from budgetmgr.models.account import Reward
-from budgetmgr.serializers.accountserializer import RewardSerializer
+from budgetmgr.models.account import (
+    Reward, Account,
+)
+from budgetmgr.serializers.accountserializer import (
+    RewardSerializer, AccountSerializer
+)
 
 
 class RewardViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = RewardSerializer
     queryset = Reward.objects.all()
+
+
+class AccountViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = AccountSerializer
+    queryset = Account.objects.all()
 
 
 class ListCurrentRewards(APIView):
