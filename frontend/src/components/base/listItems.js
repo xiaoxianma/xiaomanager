@@ -22,7 +22,7 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Credit Card Benefits"/>
         </ListItem>
-        <ListItem button component={Link} to="/">
+        <ListItem button component={Link} to="/expense-submit">
             <ListItemIcon>
                 <SubmitReportIcon />
             </ListItemIcon>
