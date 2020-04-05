@@ -22,9 +22,9 @@ class ListCountries(APIView):
         """
         Return a list of all countries.
         """
-        ret = {}
-        for k, v in dict(countries):
-            ret.update({"id": k, "value": v})
+        ret = []
+        for k, v in dict(countries).items():
+            ret.append({"id": k, "value": v})
         return Response(ret)
 
 
