@@ -9,6 +9,7 @@ from budgetmgr.views.transactionviews import (
     ExpenseTypeViewSet,
     TransactionViewSet,
     MerchantViewSet,
+    ListCountries,
 )
 
 
@@ -22,4 +23,5 @@ router.register('merchants', MerchantViewSet)
 urlpatterns = [
     url(r'', include(router.urls)),
     url('current-rewards/', ListCurrentRewards.as_view()),
+    url('countries/', ListCountries.as_view()),
 ]

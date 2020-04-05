@@ -7,6 +7,10 @@ export function axiosGet(endpoint, token) {
 }
 
 
-export function axiosPost(endpoint, payload) {
-    return axios.post(`${DOMAIN}${endpoint}`, payload);
+export function axiosPost(endpoint, payload, token=null) {
+    if (token) {
+        return axios.post(`${DOMAIN}${endpoint}`, payload, {headers: {"Authorization": `Bearer ${token}`}});
+    } else {
+        return axios.post(`${DOMAIN}${endpoint}`, payload);
+    }
 }

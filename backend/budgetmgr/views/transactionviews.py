@@ -1,5 +1,8 @@
 from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from django_countries import countries
 from budgetmgr.models.transaction import (
     ExpenseType,
     Transaction,
@@ -10,6 +13,16 @@ from budgetmgr.serializers.transactionserializer import (
     TransactionSerializer,
     MerchantSerializer,
 )
+
+
+class ListCountries(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, format=None):
+        """
+        Return a list of all countries.
+        """
+        return Response(dict(countries))
 
 
 class ExpenseTypeViewSet(viewsets.ModelViewSet):

@@ -5,7 +5,7 @@ import Table from "@material-ui/core/Table";
 import {useSelector} from "react-redux";
 import {axiosGet} from "../utils/axiosHelper";
 import EnhancedTableHead from "../common/EnhancedTableHead";
-import {getComparator, stableSort} from "../utils/tableSort";
+import {getComparator, stableSort} from "../utils/funcUntil";
 import Card from "@material-ui/core/Card";
 import cardHeaderColor from "@material-ui/core/colors/brown";
 import {APP_BAR_HEIGHT} from "../utils/globalParams";
