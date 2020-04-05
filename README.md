@@ -8,3 +8,10 @@ This is one feature of xiaomanager. It helps calculate how much money you lost b
 
 ### Motivation
 People usually have varieties of credit cards. They are offering benefits especially points or cash back in different categories such as restaurant, groceries, gas, travel, etc. Most people don't fully utilize the credit cards benefits from their credit cards pool due to improper credit cards use. This app is aiming to help people realize how much significantly they lost because of that.
+
+## Techniques
+- DjangoRestFramework as Backend REST service
+- React as Frontend UI
+- PostgreSQL as Database
+- Integrate Travis CI
+- Host on Heroku
