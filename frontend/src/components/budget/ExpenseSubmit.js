@@ -39,6 +39,7 @@ export default function ExpenseSubmit() {
     const userAuth = useSelector(state => state.userAuth);
     const [payments, setPayments] = useState([]);
     const [expenseCategories, setExpenseCategories] = useState([]);
+    const [countries, setCountries] = useState([]);
     // expense attributes
     const [amount, setAmount] = useState("");
     const [paymentId, setPaymentId] = useState("");
@@ -74,7 +75,22 @@ export default function ExpenseSubmit() {
             .catch(err => {
                 console.error(`Failed to fetch current expense types, ${err}`);
             });
+        axiosGet("/api/budgetmgr/countries/", userAuth.token)
+            .then(res => {
+                buildCountriesData(res.data);
+            })
+            .catch(err => {
+                console.error(`Failed to fetch countries list, ${err}`);
+            });
     }, []);
+
+    const buildCountriesData = data => {
+        const ret = data.map(row => {
+            return {id: row.id, value: row.value};
+        });
+        ret.sort((a, b) => ascendingComparator(a, b, 'value'));
+        setCountries(ret);
+    };
 
     const buildPaymentsData = data => {
         const ret = data.map(row => {
@@ -228,6 +244,7 @@ export default function ExpenseSubmit() {
                     <TextField
                         required
                         fullWidth
+                        select
                         id="Country"
                         label="Merchant Country"
                         value={merchantCountry}
@@ -235,7 +252,13 @@ export default function ExpenseSubmit() {
                         error={merchantCountryErr}
                         className={classes.textField}
                         variant="outlined"
-                    />
+                    >
+                        {countries.map((option, index) => (
+                            <MenuItem key={index} value={option.id}>
+                                {option.value}
+                            </MenuItem>
+                        ))}
+                    </TextField>
                     <Divider className={classes.divider}/>
                     <TextField
                         fullWidth

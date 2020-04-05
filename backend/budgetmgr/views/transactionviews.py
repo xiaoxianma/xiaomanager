@@ -22,7 +22,10 @@ class ListCountries(APIView):
         """
         Return a list of all countries.
         """
-        return Response(dict(countries))
+        ret = {}
+        for k, v in dict(countries):
+            ret.update({"id": k, "value": v})
+        return Response(ret)
 
 
 class ExpenseTypeViewSet(viewsets.ModelViewSet):
