@@ -29,7 +29,7 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = ('id', 'amount', 'account', 'merchant', 'expense_type', 'expense_type_name',
-                  'transaction_date', 'coupon', 'tags', 'notes')
+                  'transaction_date', 'coupon', 'tags', 'notes', 'create_time')
 
     def create(self, validated_data):
         """

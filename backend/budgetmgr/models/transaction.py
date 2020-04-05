@@ -30,5 +30,5 @@ class Transaction(models.Model):
     coupon = models.PositiveIntegerField(blank=True, null=True)
     tags = ArrayField(models.CharField(max_length=10), blank=True, null=True)
     notes = models.TextField(blank=True)
-    create_date = models.DateTimeField(auto_now_add=True)
+    create_time = models.DateTimeField(auto_now_add=True)
 
