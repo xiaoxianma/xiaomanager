@@ -10,6 +10,8 @@ import Divider from "@material-ui/core/Divider";
 import MenuItem from "@material-ui/core/MenuItem";
 import Icon from "@material-ui/core/Icon";
 import Button from "@material-ui/core/Button";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 import {axiosGet, axiosPost} from "../utils/axiosHelper";
 import {useSelector} from "react-redux";
 import {ascendingComparator} from "../utils/funcUntil";
@@ -40,6 +42,8 @@ export default function ExpenseSubmit() {
     const [payments, setPayments] = useState([]);
     const [expenseCategories, setExpenseCategories] = useState([]);
     const [countries, setCountries] = useState([]);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(null);
     // expense attributes
     const [amount, setAmount] = useState("");
     const [paymentId, setPaymentId] = useState("");
@@ -138,11 +142,13 @@ export default function ExpenseSubmit() {
         };
         axiosPost("/api/budgetmgr/transactions/", payload, userAuth.token)
             .then(res => {
-                console.log(res.data);
+                setSubmitSuccess(true);
             })
             .catch(err => {
                 console.error(`Failed to submit expense, ${err}`);
+                setSubmitSuccess(false);
             });
+        setSnackbarOpen(true);
     };
 
 
@@ -305,6 +311,12 @@ export default function ExpenseSubmit() {
                         Submit
                     </Button>
                 </div>
+                <Snackbar open={snackbarOpen} autoHideDuration={5000}>
+                    {submitSuccess ?
+                        <MuiAlert elevation={6} variant="filled" severity="success">A new expense is posted successfully!</MuiAlert> :
+                        <MuiAlert elevation={6} variant="filled" severity="error">Your expense is failed to post!</MuiAlert>
+                    }
+                </Snackbar>
             </Container>
         </Paper>
     );
