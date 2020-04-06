@@ -13,6 +13,7 @@ from budgetmgr.views.transactionviews import (
 )
 from budgetmgr.views.expenseviews import (
     ExpenseDailyView,
+    ExpenseMonthlyView,
 )
 
 
@@ -28,4 +29,5 @@ urlpatterns = [
     url('current-rewards/', ListCurrentRewards.as_view()),
     url('countries/', ListCountries.as_view()),
     url('expense-daily/', ExpenseDailyView.as_view()),
+    url('expense-monthly/', ExpenseMonthlyView.as_view()),
 ]
