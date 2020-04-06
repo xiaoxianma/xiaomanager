@@ -9,6 +9,7 @@ import NotFound from "./common/NotFound";
 import {makeStyles} from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import ExpenseSubmit from "./budget/ExpenseSubmit";
+import TransactionDetail from "./budget/TransactionDetail";
 
 
 const useStyle = makeStyles(theme => ({
@@ -39,6 +40,7 @@ export default function App() {
                         <PrivateRoute exact path="/"><DashBoard/></PrivateRoute>
                         <PrivateRoute exact path="/ccbenefits"><CreditCardBenefits/></PrivateRoute>
                         <PrivateRoute exact path="/expense-submit"><ExpenseSubmit/></PrivateRoute>
+                        <PrivateRoute exact path="/transaction-detail/:id"><TransactionDetail/></PrivateRoute>
                         <Route path="*"><NotFound/></Route>
                     </Switch>
                 </main>

@@ -1,11 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import {APP_BAR_HEIGHT} from "../utils/globalParams";
 import {TextField} from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Container from "@material-ui/core/Container";
-import grey from "@material-ui/core/colors/grey";
 import Divider from "@material-ui/core/Divider";
 import MenuItem from "@material-ui/core/MenuItem";
 import Icon from "@material-ui/core/Icon";
@@ -14,18 +10,12 @@ import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import {axiosGet, axiosPost} from "../utils/axiosHelper";
 import {useSelector} from "react-redux";
-import {ascendingComparator} from "../utils/funcUntil";
+import {ascendingComparator, sleep} from "../utils/funcUntil";
+import ChildPageBaseSM from "../common/ChildPageBaseSM";
+import {useHistory} from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        height: `calc(100% - ${APP_BAR_HEIGHT}px)`,
-    },
-    container: {
-        backgroundColor: grey[200],
-    },
     textField: {
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
@@ -38,12 +28,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function ExpenseSubmit() {
     const classes = useStyles();
+    const history = useHistory();
     const userAuth = useSelector(state => state.userAuth);
     const [payments, setPayments] = useState([]);
     const [expenseCategories, setExpenseCategories] = useState([]);
     const [countries, setCountries] = useState([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(null);
+    const [transactionId, setTransactionId] = useState(null);
     // expense attributes
     const [amount, setAmount] = useState("");
     const [paymentId, setPaymentId] = useState("");
@@ -86,7 +78,15 @@ export default function ExpenseSubmit() {
             .catch(err => {
                 console.error(`Failed to fetch countries list, ${err}`);
             });
-    }, []);
+    }, [userAuth.token]);
+
+    useEffect(() => {
+        if (transactionId) {
+            sleep(2000).then(() => {
+                history.push(`/transaction-detail/${transactionId}`);
+            });
+        }
+    }, [history, transactionId]);
 
     const buildCountriesData = data => {
         const ret = data.map(row => {
@@ -143,6 +143,7 @@ export default function ExpenseSubmit() {
         axiosPost("/api/budgetmgr/transactions/", payload, userAuth.token)
             .then(res => {
                 setSubmitSuccess(true);
+                setTransactionId(res.data.id);
             })
             .catch(err => {
                 console.error(`Failed to submit expense, ${err}`);
@@ -151,173 +152,181 @@ export default function ExpenseSubmit() {
         setSnackbarOpen(true);
     };
 
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === "clickaway") return;
+        setSnackbarOpen(false);
+        setSubmitSuccess(null);
+    };
 
     return (
-        <Paper className={classes.root}>
-            <Container maxWidth="sm" className={classes.container}>
+        <ChildPageBaseSM>
+            <div>
+                <h3>Please enter your expense below</h3>
+            </div>
+            <div>
+                <TextField
+                    required
+                    fullWidth
+                    id="amount"
+                    label="Amount"
+                    value={amount}
+                    onChange={event => setAmount(event.target.value)}
+                    error={amountErr}
+                    type="number"
+                    className={classes.textField}
+                    variant="outlined"
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                        inputProps: {min: 0, step: 0.5},
+                    }}
+                />
+                <TextField
+                    fullWidth
+                    select
+                    id="payment"
+                    label="Payment"
+                    value={paymentId}
+                    onChange={event => setPaymentId(event.target.value)}
+                    error={paymentIdErr}
+                    className={classes.textField}
+                    variant="outlined"
+                >
+                    {payments.map((option) => (
+                        <MenuItem key={option.id} value={option.id}>
+                            {option.value}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    fullWidth
+                    select
+                    id="expense-type"
+                    label="Expense Category"
+                    value={expenseCategoryId}
+                    onChange={event => setExpenseCategoryId(event.target.value)}
+                    error={expenseCategoryIdErr}
+                    className={classes.textField}
+                    variant="outlined"
+                >
+                    {expenseCategories.map((option) => (
+                        <MenuItem key={option.id} value={option.id}>
+                            {option.value}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    required
+                    fullWidth
+                    id="transaction-date"
+                    label="Transaction Date"
+                    value={transactionDate}
+                    onChange={event => setTransactionDate(event.target.value)}
+                    error={transactionDateErr}
+                    type="date"
+                    className={classes.textField}
+                    variant="outlined"
+                />
                 <div>
-                    <h3>Please enter your expense below</h3>
+                    <span style={{fontSize: 14}}>Merchant</span>
+                    <Divider/>
                 </div>
+                <TextField
+                    required
+                    fullWidth
+                    id="merchant-name"
+                    label="Name"
+                    value={merchantName}
+                    onChange={event => setMerchantName(event.target.value)}
+                    error={merchantNameErr}
+                    className={classes.textField}
+                    variant="outlined"
+                />
+                <TextField
+                    required
+                    fullWidth
+                    id="merchant-city"
+                    label="City"
+                    value={merchantCity}
+                    onChange={event => setMerchantCity(event.target.value)}
+                    error={merchantCityErr}
+                    className={classes.textField}
+                    variant="outlined"
+                />
+                <TextField
+                    required
+                    fullWidth
+                    select
+                    id="Country"
+                    label="Merchant Country"
+                    value={merchantCountry}
+                    onChange={event => setMerchantCountry(event.target.value)}
+                    error={merchantCountryErr}
+                    className={classes.textField}
+                    variant="outlined"
+                >
+                    {countries.map((option, index) => (
+                        <MenuItem key={index} value={option.id}>
+                            {option.value}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <Divider className={classes.divider}/>
+                <TextField
+                    fullWidth
+                    id="coupon"
+                    label="Coupon"
+                    value={coupon}
+                    onChange={event => setCoupon(event.target.value)}
+                    className={classes.textField}
+                    type="number"
+                    variant="outlined"
+                    InputProps={{
+                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                        inputProps: {min: 0, step: 0.5},
+                    }}
+                />
+                <TextField
+                    fullWidth
+                    id="tags"
+                    label="Tags"
+                    value={tags}
+                    onChange={event => setTags(event.target.value)}
+                    helperText="please use , separate tags"
+                    className={classes.textField}
+                    variant="outlined"
+                />
+                <TextField
+                    fullWidth
+                    multiline
+                    id="notes"
+                    label="Notes"
+                    value={notes}
+                    onChange={event => setNotes(event.target.value)}
+                    className={classes.textField}
+                    variant="outlined"
+                />
+                <Button
+                    fullWidth
+                    onClick={handleSubmit}
+                    variant="contained"
+                    color="secondary"
+                    style={{marginTop: 10}}
+                    endIcon={<Icon>send</Icon>}
+                >
+                    Submit
+                </Button>
                 <div>
-                    <TextField
-                        required
-                        fullWidth
-                        id="amount"
-                        label="Amount"
-                        value={amount}
-                        onChange={event => setAmount(event.target.value)}
-                        error={amountErr}
-                        type="number"
-                        className={classes.textField}
-                        variant="outlined"
-                        InputProps={{
-                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                            inputProps: {min: 0, step: 0.5},
-                        }}
-                    />
-                    <TextField
-                        fullWidth
-                        select
-                        id="payment"
-                        label="Payment"
-                        value={paymentId}
-                        onChange={event => setPaymentId(event.target.value)}
-                        error={paymentIdErr}
-                        className={classes.textField}
-                        variant="outlined"
-                    >
-                        {payments.map((option) => (
-                            <MenuItem key={option.id} value={option.id}>
-                                {option.value}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        fullWidth
-                        select
-                        id="expense-type"
-                        label="Expense Category"
-                        value={expenseCategoryId}
-                        onChange={event => setExpenseCategoryId(event.target.value)}
-                        error={expenseCategoryIdErr}
-                        className={classes.textField}
-                        variant="outlined"
-                    >
-                        {expenseCategories.map((option) => (
-                            <MenuItem key={option.id} value={option.id}>
-                                {option.value}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        required
-                        fullWidth
-                        id="transaction-date"
-                        label="Transaction Date"
-                        value={transactionDate}
-                        onChange={event => setTransactionDate(event.target.value)}
-                        error={transactionDateErr}
-                        type="date"
-                        className={classes.textField}
-                        variant="outlined"
-                    />
-                    <div>
-                        <span style={{fontSize: 14}}>Merchant</span>
-                        <Divider/>
-                    </div>
-                    <TextField
-                        required
-                        fullWidth
-                        id="merchant-name"
-                        label="Name"
-                        value={merchantName}
-                        onChange={event => setMerchantName(event.target.value)}
-                        error={merchantNameErr}
-                        className={classes.textField}
-                        variant="outlined"
-                    />
-                    <TextField
-                        required
-                        fullWidth
-                        id="merchant-city"
-                        label="City"
-                        value={merchantCity}
-                        onChange={event => setMerchantCity(event.target.value)}
-                        error={merchantCityErr}
-                        className={classes.textField}
-                        variant="outlined"
-                    />
-                    <TextField
-                        required
-                        fullWidth
-                        select
-                        id="Country"
-                        label="Merchant Country"
-                        value={merchantCountry}
-                        onChange={event => setMerchantCountry(event.target.value)}
-                        error={merchantCountryErr}
-                        className={classes.textField}
-                        variant="outlined"
-                    >
-                        {countries.map((option, index) => (
-                            <MenuItem key={index} value={option.id}>
-                                {option.value}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <Divider className={classes.divider}/>
-                    <TextField
-                        fullWidth
-                        id="coupon"
-                        label="Coupon"
-                        value={coupon}
-                        onChange={event => setCoupon(event.target.value)}
-                        className={classes.textField}
-                        type="number"
-                        variant="outlined"
-                        InputProps={{
-                            startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                            inputProps: {min: 0, step: 0.5},
-                        }}
-                    />
-                    <TextField
-                        fullWidth
-                        id="tags"
-                        label="Tags"
-                        value={tags}
-                        onChange={event => setTags(event.target.value)}
-                        helperText="please use , separate tags"
-                        className={classes.textField}
-                        variant="outlined"
-                    />
-                    <TextField
-                        fullWidth
-                        multiline
-                        id="notes"
-                        label="Notes"
-                        value={notes}
-                        onChange={event => setNotes(event.target.value)}
-                        className={classes.textField}
-                        variant="outlined"
-                    />
-                    <Button
-                        fullWidth
-                        onClick={handleSubmit}
-                        variant="contained"
-                        color="secondary"
-                        style={{marginTop: 10}}
-                        endIcon={<Icon>send</Icon>}
-                    >
-                        Submit
-                    </Button>
+                    <Snackbar open={snackbarOpen} autoHideDuration={5000} onClose={handleSnackbarClose}
+                              style={{width: "100%"}}>
+                        {submitSuccess === null ? null : submitSuccess === true ?
+                            <MuiAlert variant="filled" severity="success" style={{width: "100%"}}>A new expense is
+                                posted successfully! Redirecting to the expense detail Page...</MuiAlert> :
+                            <MuiAlert variant="filled" severity="error" style={{width: "100%"}}>Your expense is failed
+                                to post!</MuiAlert>
+                        }
+                    </Snackbar>
                 </div>
-                <Snackbar open={snackbarOpen} autoHideDuration={5000}>
-                    {submitSuccess ?
-                        <MuiAlert elevation={6} variant="filled" severity="success">A new expense is posted successfully!</MuiAlert> :
-                        <MuiAlert elevation={6} variant="filled" severity="error">Your expense is failed to post!</MuiAlert>
-                    }
-                </Snackbar>
-            </Container>
-        </Paper>
+            </div>
+        </ChildPageBaseSM>
     );
 }
