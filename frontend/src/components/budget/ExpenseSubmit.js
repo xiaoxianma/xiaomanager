@@ -11,7 +11,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import {axiosGet, axiosPost} from "../utils/axiosHelper";
 import {useSelector} from "react-redux";
 import {ascendingComparator, sleep} from "../utils/funcUntil";
-import ChildPageBaseSM from "../common/ChildPageBaseSM";
+import ChildPageBase from "../common/ChildPageBase";
 import {useHistory} from "react-router-dom";
 
 
@@ -159,7 +159,7 @@ export default function ExpenseSubmit() {
     };
 
     return (
-        <ChildPageBaseSM>
+        <ChildPageBase>
             <div>
                 <h3>Please enter your expense below</h3>
             </div>
@@ -327,6 +327,6 @@ export default function ExpenseSubmit() {
                     </Snackbar>
                 </div>
             </div>
-        </ChildPageBaseSM>
+        </ChildPageBase>
     );
 }

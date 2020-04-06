@@ -5,6 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import SubmitReportIcon from '@material-ui/icons/Send';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
+import ReceiptIcon from "@material-ui/icons/Receipt";
 import {Link} from "react-router-dom";
 
 
@@ -27,6 +28,12 @@ export const mainListItems = (
                 <SubmitReportIcon />
             </ListItemIcon>
             <ListItemText primary="Expense Submit"/>
+        </ListItem>
+        <ListItem button component={Link} to="/expense-overview">
+            <ListItemIcon>
+                <ReceiptIcon />
+            </ListItemIcon>
+            <ListItemText primary="Expense Overview"/>
         </ListItem>
     </React.Fragment>
 );

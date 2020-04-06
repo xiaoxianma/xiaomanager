@@ -17,11 +17,11 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function ChildPageBaseSM({children}) {
+export default function ChildPageBase({children, maxWidth="sm"}) {
     const classes = useStyles();
     return (
         <Paper className={classes.root}>
-            <Container maxWidth="sm" className={classes.container}>
+            <Container maxWidth={maxWidth} className={classes.container}>
                 {children}
             </Container>
         </Paper>
