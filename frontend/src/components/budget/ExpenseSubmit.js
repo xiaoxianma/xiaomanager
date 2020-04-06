@@ -82,7 +82,7 @@ export default function ExpenseSubmit() {
 
     useEffect(() => {
         if (transactionId) {
-            sleep(2000).then(() => {
+            sleep(1500).then(() => {
                 history.push(`/transaction-detail/${transactionId}`);
             });
         }
