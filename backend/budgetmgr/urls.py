@@ -11,6 +11,9 @@ from budgetmgr.views.transactionviews import (
     MerchantViewSet,
     ListCountries,
 )
+from budgetmgr.views.expenseviews import (
+    ExpenseDailyView,
+)
 
 
 router = DefaultRouter()
@@ -24,4 +27,5 @@ urlpatterns = [
     url(r'', include(router.urls)),
     url('current-rewards/', ListCurrentRewards.as_view()),
     url('countries/', ListCountries.as_view()),
+    url('expense-daily/', ExpenseDailyView.as_view()),
 ]
