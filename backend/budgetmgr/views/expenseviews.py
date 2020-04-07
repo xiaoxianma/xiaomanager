@@ -1,7 +1,7 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.db.models import Sum
+from django.db.models import Sum, F
 from django.db.models.functions import TruncMonth
 
 from budgetmgr.models.transaction import (
@@ -14,7 +14,10 @@ class ExpenseDailyView(APIView):
 
     def get(self, request):
         return Response(
-            Transaction.objects.values('transaction_date').order_by('transaction_date').annotate(total_price=Sum('amount'))
+            Transaction.objects
+                .values('transaction_date')
+                .order_by('transaction_date')
+                .annotate(amount=Sum('amount'))
         )
 
 
@@ -25,8 +28,8 @@ class ExpenseMonthlyView(APIView):
         return Response(
             Transaction.objects
                 .annotate(month=TruncMonth('transaction_date'))
-                .values('month')
+                .values('month', category=F('expense_type__name'))
                 .order_by('month')
-                .annotate(total_price=Sum('amount'))
+                .annotate(amount=Sum('amount'))
         )
 

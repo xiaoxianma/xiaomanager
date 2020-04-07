@@ -44,7 +44,7 @@ export default function ExpenseDailyView() {
                         <YAxis/>
                         <CartesianGrid strokeDasharray="3 3"/>
                         <Tooltip formatter={handleFormatter}/>
-                        <Line type="monotone" dataKey="total_price" stroke="#8884d8"
+                        <Line type="monotone" dataKey="amount" stroke="#8884d8"
                               activeDot={{r: 8}}/>
                     </LineChart>
                 </ResponsiveContainer>
