@@ -1,8 +1,11 @@
 import React from "react";
+import ExpenseDailyView from "./ExpenseDailyView";
 
 
 export default function DashBoard() {
     return (
-        <h1>Welcome to XiaoManager page</h1>
+        <div>
+            <ExpenseDailyView/>
+        </div>
     );
 }
