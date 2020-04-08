@@ -29,7 +29,7 @@ class ExpenseMonthlyView(APIView):
         ret = defaultdict(list)
         query = Transaction.objects.annotate(date=TruncMonth('transaction_date')).values('date', category=F('expense_type__name')).order_by('date').annotate(amount=Sum('amount'))
         for item in query:
-            year_month = str(item.pop('date'))[:8]
+            year_month = str(item.pop('date'))[:7]
             ret[year_month].append(item)
         return Response(ret)
 
