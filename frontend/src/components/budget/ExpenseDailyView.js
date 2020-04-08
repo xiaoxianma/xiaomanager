@@ -39,7 +39,7 @@ export default function ExpenseDailyView() {
             <CardHeader title="Daily Expense" className={classes.cardHeader}/>
             <CardContent>
                 <ResponsiveContainer width="100%" aspect={5.0}>
-                    <LineChart width={600} height={500} data={data} margin={{top: 5, right: 5, left: 5, bottom: 5}}>
+                    <LineChart data={data} margin={{top: 5, right: 5, left: 5, bottom: 5}}>
                         <XAxis dataKey="transaction_date"/>
                         <YAxis/>
                         <CartesianGrid strokeDasharray="3 3"/>
