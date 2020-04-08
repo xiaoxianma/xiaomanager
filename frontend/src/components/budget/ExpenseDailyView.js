@@ -31,7 +31,7 @@ export default function ExpenseDailyView() {
     }, [userAuth.token]);
 
     const handleFormatter = (value, name, props) => {
-        return [`$${value}`, "expense"];
+        return [`$${value.toFixed(2)}`, "expense"];
     };
 
     return (
