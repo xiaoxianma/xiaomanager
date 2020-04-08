@@ -1,3 +1,4 @@
+from collections import defaultdict
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -25,11 +26,10 @@ class ExpenseMonthlyView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        return Response(
-            Transaction.objects
-                .annotate(month=TruncMonth('transaction_date'))
-                .values('month', category=F('expense_type__name'))
-                .order_by('month')
-                .annotate(amount=Sum('amount'))
-        )
+        ret = defaultdict(list)
+        query = Transaction.objects.annotate(date=TruncMonth('transaction_date')).values('date', category=F('expense_type__name')).order_by('date').annotate(amount=Sum('amount'))
+        for item in query:
+            year_month = str(item.pop('date'))[:8]
+            ret[year_month].append(item)
+        return Response(ret)
 
