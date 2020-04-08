@@ -159,7 +159,7 @@ export default function ExpenseSubmit() {
     };
 
     return (
-        <ChildPageBase>
+        <ChildPageBase flexibleHeight={false}>
             <div>
                 <h3>Please enter your expense below</h3>
             </div>
@@ -321,7 +321,8 @@ export default function ExpenseSubmit() {
                         {submitSuccess === null ? null : submitSuccess === true ?
                             <MuiAlert variant="filled" severity="success" style={{width: "100%"}}>A new expense is
                                 posted successfully! Redirecting to the expense detail Page...</MuiAlert> :
-                            <MuiAlert variant="filled" severity="error" style={{width: "100%"}}>Your expense is failed
+                            <MuiAlert variant="filled" severity="error" style={{width: "100%"}}>Your expense is
+                                failed
                                 to post!</MuiAlert>
                         }
                     </Snackbar>
