@@ -3,7 +3,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import cyan from "@material-ui/core/colors/cyan";
 import {axiosGet} from "../utils/axiosHelper";
 import {useSelector} from "react-redux";
-import {ascendingComparator} from "../utils/funcUntil";
+import {descendingComparator} from "../utils/funcUntil";
 import ChildPageBase from "../common/ChildPageBase";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
@@ -41,16 +41,18 @@ export default function ExpenseOverview() {
     const classes = useStyles();
     const userAuth = useSelector(state => state.userAuth);
     const [transactions, setTransactions] = useState([]);
+    const [transactionDeltaDays, setTransactionDeltaDays] = useState(30);
 
     useEffect(() => {
-        axiosGet(`/api/budgetmgr/transactions/`, userAuth.token)
+        const minDate = new Date(new Date().setDate(new Date().getDate() - transactionDeltaDays)).toISOString();
+        axiosGet(`/api/budgetmgr/transactions/?min_date=${minDate}`, userAuth.token)
             .then(res => {
                 buildTransactionsData(res.data);
             })
             .catch(err => {
                 console.error(`Failed to fetch transaction list, ${err}`);
             })
-    }, [userAuth.token]);
+    }, [userAuth.token, transactionDeltaDays]);
 
     const buildTransactionsData = (data) => {
         const ret = data.map(row => {
@@ -62,7 +64,7 @@ export default function ExpenseOverview() {
                 amount: row.amount,
             }
         });
-        ret.sort((a, b) => ascendingComparator(a, b, 'date'));
+        ret.sort((a, b) => descendingComparator(a, b, 'date'));
         setTransactions(ret);
     };
 
