@@ -1,3 +1,4 @@
+from django_filters import rest_framework as filters
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -12,6 +13,9 @@ from budgetmgr.serializers.transactionserializer import (
     ExpenseTypeSerializer,
     TransactionSerializer,
     MerchantSerializer,
+)
+from budgetmgr.filters.transactionfilters import (
+    TransactionFilter,
 )
 
 
@@ -44,3 +48,6 @@ class TransactionViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = TransactionSerializer
     queryset = Transaction.objects.all()
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = TransactionFilter
+

@@ -14,3 +14,4 @@ whitenoise==5.0.1
 django-extensions==2.2.8
 djangorestframework-simplejwt==4.4.0
 django-cors-headers==3.2.1
+django-filter==2.2.0
