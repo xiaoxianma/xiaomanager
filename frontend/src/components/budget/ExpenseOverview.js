@@ -5,6 +5,7 @@ import {axiosGet} from "../utils/axiosHelper";
 import {useSelector} from "react-redux";
 import {descendingComparator} from "../utils/funcUntil";
 import ChildPageBase from "../common/ChildPageBase";
+import {TextField} from "@material-ui/core";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import Table from "@material-ui/core/Table";
@@ -34,6 +35,10 @@ const useStyles = makeStyles(theme => ({
         '&:hover': {
             backgroundColor: cyan[300]
         }
+    },
+    textField: {
+        marginBottom: theme.spacing(3),
+        width: 80,
     }
 }));
 
@@ -76,6 +81,15 @@ export default function ExpenseOverview() {
                 <Card className>
                     <CardHeader title="Transactions"/>
                     <CardContent>
+                        <TextField
+                            required
+                            id="last_days"
+                            label="Last days"
+                            value={transactionDeltaDays}
+                            type="number"
+                            className={classes.textField}
+                            onChange={event => setTransactionDeltaDays(parseInt(event.target.value))}
+                        />
                         <Table className={classes.table} size="small">
                             <TableHead>
                                 <TableRow>
