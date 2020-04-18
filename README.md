@@ -15,7 +15,7 @@ People usually have varieties of credit cards. They are offering benefits especi
 - Manage daily transactions including New/Modify/Delete (Complete)
 - AI & Algorithm suggest the best payment(credit cards, debit card, cash, etc.) you need to make (TODO)
   * Support manual input merchant information
-  * Support take a photo of merchant
+  * Support take a photo of merchant  
   Hight level strategy:
   1. Analyze category of the merchant
   2. Run this category and merchant throughout the credit card pool by category reward, special merchant offer, etc
