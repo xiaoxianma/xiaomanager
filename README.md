@@ -4,7 +4,7 @@ A family life manager.
 https://xiaomanager.herokuapp.com/
 
 ## Expense manager
-This is one feature of xiaomanager. The main purpose is helping people save money!
+This is one feature of xiaomanager. Manage family expense.
 
 ### Motivation
 People usually have varieties of credit cards. They are offering benefits especially points or cash back in different categories such as restaurant, groceries, gas, travel, etc. Most people don't fully utilize the credit cards benefits from their credit cards pool due to improper credit cards use. This app is aiming to help people realize how much significantly they lost because of that.
