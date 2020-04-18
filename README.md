@@ -3,7 +3,7 @@ A family life manager.
 
 https://xiaomanager.herokuapp.com/
 
-## Payment manager
+## Expense manager
 This is one feature of xiaomanager. The main purpose is helping people save money!
 
 ### Motivation
