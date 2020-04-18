@@ -17,6 +17,7 @@ import TableBody from "@material-ui/core/TableBody";
 import {Link} from "react-router-dom";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import IconButton from "@material-ui/core/IconButton";
+import moment from "moment";
 
 const useStyles = makeStyles(theme => ({
     table: {
@@ -37,8 +38,21 @@ const useStyles = makeStyles(theme => ({
         }
     },
     textField: {
-        marginBottom: theme.spacing(3),
-        width: 80,
+        marginBottom: theme.spacing(2),
+        marginRight: theme.spacing(2),
+        width: 250,
+    },
+    summaryStats: {
+        marginBottom: theme.spacing(2),
+        borderSpacing: 0,
+        borderRight: "thin solid grey",
+        borderBottom: "thin solid grey",
+    },
+    summaryStatsBorder: {
+        borderLeft: "thin solid grey",
+        borderTop: "thin solid grey",
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
     }
 }));
 
@@ -46,21 +60,29 @@ export default function ExpenseOverview() {
     const classes = useStyles();
     const userAuth = useSelector(state => state.userAuth);
     const [transactions, setTransactions] = useState([]);
-    const [transactionDeltaDays, setTransactionDeltaDays] = useState(30);
+    const [fromDate, setFromDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+    const [toDate, setToDate] = useState(moment().format('YYYY-MM-DD'));
+    const [totalExpense, setTotalExpense] = useState();
+    const [totalTransactionCount, setTotalTransactionCount] = useState();
 
     useEffect(() => {
-        const minDate = new Date(new Date().setDate(new Date().getDate() - transactionDeltaDays)).toISOString();
-        axiosGet(`/api/budgetmgr/transactions/?min_date=${minDate}`, userAuth.token)
+        const minDate = moment(fromDate, 'YYYY-MM-DD').format();
+        const maxDate = moment(toDate, 'YYYY-MM-DD').format();
+        axiosGet(`/api/budgetmgr/transactions/?min_date=${minDate}&max_date=${maxDate}`, userAuth.token)
             .then(res => {
                 buildTransactionsData(res.data);
             })
             .catch(err => {
                 console.error(`Failed to fetch transaction list, ${err}`);
             })
-    }, [userAuth.token, transactionDeltaDays]);
+    }, [userAuth.token, fromDate, toDate]);
 
     const buildTransactionsData = (data) => {
+        let expense = 0;
+        let transactionCount = 0;
         const ret = data.map(row => {
+            expense += row.amount;
+            transactionCount += 1;
             return {
                 id: row.id,
                 date: row.transaction_date,
@@ -71,6 +93,8 @@ export default function ExpenseOverview() {
         });
         ret.sort((a, b) => descendingComparator(a, b, 'date'));
         setTransactions(ret);
+        setTotalExpense(expense);
+        setTotalTransactionCount(transactionCount);
     };
 
     if (transactions === null) {
@@ -78,18 +102,37 @@ export default function ExpenseOverview() {
     } else {
         return (
             <ChildPageBase maxWidth="md">
-                <Card className>
+                <Card>
                     <CardHeader title="Transactions"/>
                     <CardContent>
                         <TextField
-                            required
-                            id="last_days"
-                            label="Last days"
-                            value={transactionDeltaDays}
-                            type="number"
+                            id="transaction-min-date"
                             className={classes.textField}
-                            onChange={event => setTransactionDeltaDays(parseInt(event.target.value))}
+                            label="From"
+                            value={fromDate}
+                            onChange={event => setFromDate(event.target.value)}
+                            type="date"
+                            variant="outlined"
                         />
+                        <TextField
+                            id="transaction-max-date"
+                            className={classes.textField}
+                            label="To"
+                            value={toDate}
+                            onChange={event => setToDate(event.target.value)}
+                            type="date"
+                            variant="outlined"
+                        />
+                        <table className={classes.summaryStats}>
+                            <tr>
+                                <th className={classes.summaryStatsBorder}>Expense($)</th>
+                                <th className={classes.summaryStatsBorder}>Transactions</th>
+                            </tr>
+                            <tr className={classes.summaryStatsBorder}>
+                                <td className={classes.summaryStatsBorder}>{totalExpense}</td>
+                                <td className={classes.summaryStatsBorder}>{totalTransactionCount}</td>
+                            </tr>
+                        </table>
                         <Table className={classes.table} size="small">
                             <TableHead>
                                 <TableRow>
