@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import moment from "moment";
 import {makeStyles} from "@material-ui/core/styles";
 import {TextField} from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -40,7 +41,7 @@ export default function ExpenseSubmit() {
     const [amount, setAmount] = useState("");
     const [paymentId, setPaymentId] = useState("");
     const [expenseCategoryId, setExpenseCategoryId] = useState("");
-    const [transactionDate, setTransactionDate] = useState(new Date().toISOString().slice(0, 10));
+    const [transactionDate, setTransactionDate] = useState(moment().format("YYYY-MM-DD"));
     const [merchantName, setMerchantName] = useState("");
     const [merchantCity, setMerchantCity] = useState("chicago");
     const [merchantCountry, setMerchantCountry] = useState("US");
