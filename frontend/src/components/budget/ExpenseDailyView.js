@@ -7,6 +7,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import {makeStyles} from "@material-ui/core/styles";
 import cardHeaderColor from "@material-ui/core/colors/brown";
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     cardHeader: {
@@ -15,6 +16,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ExpenseDailyView() {
+    const history = useHistory();
     const classes = useStyles();
     const [data, setData] = useState([]);
     const userAuth = useSelector(state => state.userAuth);
@@ -34,6 +36,11 @@ export default function ExpenseDailyView() {
         return [`$${value.toFixed(2)}`, "expense"];
     };
 
+    const handleDotClick = (event) => {
+        const date = event.payload.transaction_date;
+        history.push(`/expense-overview?datefrom=${date}&dateto=${date}`);
+    };
+
     return (
         <Card>
             <CardHeader title="Daily Expense" className={classes.cardHeader}/>
@@ -45,7 +52,7 @@ export default function ExpenseDailyView() {
                         <CartesianGrid strokeDasharray="3 3"/>
                         <Tooltip formatter={handleFormatter}/>
                         <Line type="monotone" dataKey="amount" stroke="#8884d8"
-                              activeDot={{r: 8}}/>
+                              activeDot={{r: 8, onClick: handleDotClick}}/>
                     </LineChart>
                 </ResponsiveContainer>
             </CardContent>
