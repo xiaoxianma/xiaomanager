@@ -14,7 +14,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import IconButton from "@material-ui/core/IconButton";
 import moment from "moment";
@@ -58,6 +58,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function ExpenseOverview() {
     const classes = useStyles();
+    const query = new URLSearchParams(useLocation().search);
     const userAuth = useSelector(state => state.userAuth);
     const [transactions, setTransactions] = useState([]);
     const [fromDate, setFromDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'));
@@ -76,6 +77,14 @@ export default function ExpenseOverview() {
                 console.error(`Failed to fetch transaction list, ${err}`);
             })
     }, [userAuth.token, fromDate, toDate]);
+
+    useEffect(() => {
+        // only componentDidMount
+        const fromDateParam = query.get("datefrom");
+        const toDateParam = query.get("dateto");
+        if (fromDateParam) setFromDate(fromDateParam);
+        if (toDateParam) setToDate(toDateParam);
+    }, []);
 
     const buildTransactionsData = (data) => {
         let expense = 0;
@@ -124,14 +133,19 @@ export default function ExpenseOverview() {
                             variant="outlined"
                         />
                         <table className={classes.summaryStats}>
+                            <thead>
                             <tr>
                                 <th className={classes.summaryStatsBorder}>Expense($)</th>
                                 <th className={classes.summaryStatsBorder}>Transactions</th>
                             </tr>
+                            </thead>
+                            <tbody>
                             <tr className={classes.summaryStatsBorder}>
-                                <td className={classes.summaryStatsBorder}>{totalExpense}</td>
+                                <td className={classes.summaryStatsBorder}>{Number(totalExpense).toFixed(2)}</td>
                                 <td className={classes.summaryStatsBorder}>{totalTransactionCount}</td>
                             </tr>
+                            </tbody>
+
                         </table>
                         <Table className={classes.table} size="small">
                             <TableHead>
