@@ -23,6 +23,12 @@ People usually have varieties of credit cards. They are offering benefits especi
   4. Pick the winner!
 - Show how much money lose away from the best strategy (TODO)
 
+## Asset portfolio manager
+TODO
+
+## Travel manager
+TODO
+
 ## Techniques
 - DjangoRestFramework as Backend REST service
 - React as Frontend UI
