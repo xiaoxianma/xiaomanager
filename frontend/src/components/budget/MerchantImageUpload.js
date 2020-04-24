@@ -22,7 +22,7 @@ export default function MerchantImageUpload() {
         const file = event.target.files[0];
         const data = new FormData();
         data.append("file", file);
-        axiosPut(`/api/budgetmgr/merchant-image-upload/${file.name}/`, data, userAuth.token)
+        axiosPut(`/api/budgetmgr/merchant-image-upload/`, data, userAuth.token)
             .then(res => {
                 console.log("upload image successfully")
             })
