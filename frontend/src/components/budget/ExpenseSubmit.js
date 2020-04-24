@@ -14,6 +14,7 @@ import {useSelector} from "react-redux";
 import {ascendingComparator, sleep} from "../utils/funcUntil";
 import ChildPageBase from "../common/ChildPageBase";
 import {useHistory} from "react-router-dom";
+import MerchantImageUpload from "./MerchantImageUpload";
 
 
 const useStyles = makeStyles(theme => ({
@@ -231,6 +232,7 @@ export default function ExpenseSubmit() {
                     <span style={{fontSize: 14}}>Merchant</span>
                     <Divider/>
                 </div>
+                <MerchantImageUpload/>
                 <TextField
                     required
                     fullWidth

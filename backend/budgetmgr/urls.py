@@ -15,6 +15,7 @@ from budgetmgr.views.expenseviews import (
     ExpenseDailyView,
     ExpenseMonthlyView,
 )
+from budgetmgr.views.imageviews import MerchantImageView
 
 
 router = DefaultRouter()
@@ -30,4 +31,5 @@ urlpatterns = [
     url('countries/', ListCountries.as_view()),
     url('expense-daily/', ExpenseDailyView.as_view()),
     url('expense-monthly/', ExpenseMonthlyView.as_view()),
+    url('merchant-image-upload/', MerchantImageView.as_view()),
 ]
