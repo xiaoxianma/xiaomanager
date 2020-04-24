@@ -5,7 +5,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Sum, F
 from django.db.models.functions import TruncMonth
-
 from budgetmgr.models.transaction import (
     Transaction,
 )

@@ -14,3 +14,11 @@ export function axiosPost(endpoint, payload, token=null) {
         return axios.post(`${DOMAIN}${endpoint}`, payload);
     }
 }
+
+export function axiosPut(endpoint, payload, token=null) {
+    if (token) {
+        return axios.put(`${DOMAIN}${endpoint}`, payload, {headers: {"Authorization": `Bearer ${token}`}});
+    } else {
+        return axios.put(`${DOMAIN}${endpoint}`, payload);
+    }
+}
