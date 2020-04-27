@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {axiosGet} from "../utils/axiosHelper";
 import {useSelector} from "react-redux";
-import {Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
@@ -68,10 +68,13 @@ export default function ExpenseMonthlyView() {
     const buildData = data => {
         const ret = [];
         for (let [key, values] of Object.entries(data)) {
+            let totalAmount = 0;
             const entry = {date: key};
             for (const value of values) {
                 entry[value.category] = value.amount;
+                totalAmount += value.amount;
             }
+            entry['TOTAL'] = totalAmount;
             ret.push(entry);
         }
         setData(ret);
@@ -86,17 +89,18 @@ export default function ExpenseMonthlyView() {
             <CardHeader title="Monthly Expense" className={classes.cardHeader}/>
             <CardContent>
                 <ResponsiveContainer width="100%" aspect={4.0}>
-                    <BarChart data={data} margin={{top: 5, right: 5, left: 5, bottom: 5}}>
+                    <ComposedChart data={data} margin={{top: 5, right: 5, left: 5, bottom: 5}}>
                         <XAxis dataKey="date"/>
                         <YAxis/>
                         <CartesianGrid strokeDasharray="3 3"/>
-                        <Tooltip itemSorter={()=> 1} formatter={handleFormatter}/>
+                        <Tooltip itemSorter={() => 1} formatter={handleFormatter}/>
                         {
                             Object.entries(CATEGORY_COLOR_MAP).map(([category, color], index) => {
                                 return <Bar key={index} dataKey={category} stackId="a" fill={color}/>;
                             })
                         }
-                    </BarChart>
+                        <Line dataKey='TOTAL' type='monotone' stroke='#ff7300'/>
+                    </ComposedChart>
                 </ResponsiveContainer>
             </CardContent>
         </Card>
