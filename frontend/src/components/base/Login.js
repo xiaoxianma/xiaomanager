@@ -65,7 +65,7 @@ export default function Login() {
     const handleLogin = () => {
         axiosPost('/api/token/', {username, password})
             .then(res => {
-                dispatch(setUserAuth({username, isAuthenticated: true, token: res.access}));
+                dispatch(setUserAuth({username, isAuthenticated: true, token: res.data.access}));
             })
             .catch(err => {
                 console.error(`Failed to authenticate ${username} | ${err}`);
