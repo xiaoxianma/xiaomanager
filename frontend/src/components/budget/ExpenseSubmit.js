@@ -9,7 +9,7 @@ import Icon from "@material-ui/core/Icon";
 import Button from "@material-ui/core/Button";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import {axiosGet, axiosPost} from "../utils/axiosHelper";
+import {axiosGet, axiosPost, axiosPut} from "../utils/axiosHelper";
 import {useSelector} from "react-redux";
 import {ascendingComparator, sleep} from "../utils/funcUntil";
 import ChildPageBase from "../common/ChildPageBase";
@@ -25,7 +25,8 @@ const useStyles = makeStyles(theme => ({
     },
     divider: {
         marginBottom: theme.spacing(1),
-    }
+    },
+
 }));
 
 export default function ExpenseSubmit() {
@@ -160,6 +161,21 @@ export default function ExpenseSubmit() {
         setSubmitSuccess(null);
     };
 
+    const handleMerchantImage = (event) => {
+        const file = event.target.files[0];
+        const data = new FormData();
+        data.append("file", file);
+        axiosPut(`/api/budgetmgr/merchant-image-upload/`, data, userAuth.token)
+            .then(res => {
+                console.log("image process successfully");
+                setMerchantName(res.data.name);
+            })
+            .catch(err => {
+                console.error(`Failed to upload image, ${err}`);
+                setMerchantNameErr(true);
+            })
+    };
+
     return (
         <ChildPageBase flexibleHeight={false}>
             <div>
@@ -232,7 +248,7 @@ export default function ExpenseSubmit() {
                     <span style={{fontSize: 14}}>Merchant</span>
                     <Divider/>
                 </div>
-                <MerchantImageUpload/>
+                <MerchantImageUpload handleMerchantImage={handleMerchantImage}/>
                 <TextField
                     required
                     fullWidth
