@@ -3,7 +3,7 @@
 2. git checkout -b <project/feature> if not exists
 3. git rebase master & git push to keep update to date
 4. development
-5. commit message following commit template
+5. commit message following commit template -> "fix #<id> <description>"
 6. "git push -u origin <project/feature>" or "git push" for short
 7. Go to github page => "New pull request" under Pull requests section => master <- <project/feature> => Create pull request
 8. Go to github page => Review and Merge pull request

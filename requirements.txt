@@ -16,3 +16,4 @@ djangorestframework-simplejwt==4.4.0
 django-cors-headers==3.2.1
 django-filter==2.2.0
 google-cloud-vision==1.0.0
+python-nubia==0.2b2
