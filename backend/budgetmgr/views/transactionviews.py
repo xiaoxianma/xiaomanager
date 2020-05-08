@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django_filters import rest_framework as filters
 from rest_framework import viewsets
 from rest_framework.views import APIView
@@ -17,6 +18,10 @@ from budgetmgr.serializers.transactionserializer import (
 from budgetmgr.filters.transactionfilters import (
     TransactionFilter,
 )
+from budgetmgr.utils.cache_key import CacheKey
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ListCountries(APIView):
@@ -51,3 +56,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = TransactionFilter
 
+    def create(self, request, *args, **kwargs):
+        logger.info("deleting daily&monthly expense cache...")
+        cache.delete_many([CacheKey.DAILY_TRANSACTIONS, CacheKey.MONTHLY_TRANSACTIONS])
+        return super().create(request, *args, **kwargs)

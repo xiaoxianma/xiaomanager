@@ -3,19 +3,29 @@ from datetime import timedelta
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.core.cache import cache
 from django.db.models import Sum, F
 from django.db.models.functions import TruncMonth
 from budgetmgr.models.transaction import (
     Transaction,
 )
+from budgetmgr.utils.cache_key import CacheKey
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ExpenseDailyView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        transactions = Transaction.objects.values('transaction_date').order_by('transaction_date').annotate(amount=Sum('amount'))
-        transactions = self._zero_fill(transactions)
+        transactions = cache.get(CacheKey.DAILY_TRANSACTIONS)
+        if transactions:
+            logger.info("loaded from memcached cloud")
+        else:
+            logger.info("warming up cold cache")
+            transactions = Transaction.objects.values('transaction_date').order_by('transaction_date').annotate(amount=Sum('amount'))
+            transactions = self._zero_fill(transactions)
         return Response(transactions)
 
     def _zero_fill(self, transactions):
@@ -36,10 +46,15 @@ class ExpenseMonthlyView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        ret = defaultdict(list)
-        query = Transaction.objects.annotate(date=TruncMonth('transaction_date')).values('date', category=F('expense_type__name')).order_by('date').annotate(amount=Sum('amount'))
-        for item in query:
-            year_month = str(item.pop('date'))[:7]
-            ret[year_month].append(item)
+        ret = cache.get(CacheKey.MONTHLY_TRANSACTIONS)
+        if ret:
+            logger.info("loaded from memcached cloud")
+        else:
+            logger.info("warming up cold cache")
+            ret = defaultdict(list)
+            query = Transaction.objects.annotate(date=TruncMonth('transaction_date')).values('date', category=F('expense_type__name')).order_by('date').annotate(amount=Sum('amount'))
+            for item in query:
+                year_month = str(item.pop('date'))[:7]
+                ret[year_month].append(item)
         return Response(ret)
 
