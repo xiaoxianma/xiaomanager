@@ -61,8 +61,8 @@ export default function ExpenseOverview() {
     const query = new URLSearchParams(useLocation().search);
     const userAuth = useSelector(state => state.userAuth);
     const [transactions, setTransactions] = useState([]);
-    const [fromDate, setFromDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-    const [toDate, setToDate] = useState(moment().format('YYYY-MM-DD'));
+    const [fromDate, setFromDate] = useState(query.get("datefrom") || moment().subtract(30, 'days').format('YYYY-MM-DD'));
+    const [toDate, setToDate] = useState(query.get("dateto") || moment().format('YYYY-MM-DD'));
     const [totalExpense, setTotalExpense] = useState();
     const [totalTransactionCount, setTotalTransactionCount] = useState();
 
@@ -77,14 +77,6 @@ export default function ExpenseOverview() {
                 console.error(`Failed to fetch transaction list, ${err}`);
             })
     }, [userAuth.token, fromDate, toDate]);
-
-    useEffect(() => {
-        // only componentDidMount
-        const fromDateParam = query.get("datefrom");
-        const toDateParam = query.get("dateto");
-        if (fromDateParam) setFromDate(fromDateParam);
-        if (toDateParam) setToDate(toDateParam);
-    }, []);
 
     const buildTransactionsData = (data) => {
         let expense = 0;
