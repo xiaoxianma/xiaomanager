@@ -53,7 +53,7 @@ export default function TransactionDetail() {
             .catch(err => {
                 console.error(`Failed to fetch transaction detail with id=${id}, ${err}`);
             });
-    });
+    }, [userAuth.token, id]);
 
     useEffect(() => {
         if (accountId) {
