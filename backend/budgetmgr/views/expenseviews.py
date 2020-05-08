@@ -21,11 +21,13 @@ class ExpenseDailyView(APIView):
     def get(self, request):
         transactions = cache.get(CacheKey.DAILY_TRANSACTIONS)
         if transactions:
-            logger.info("loaded from memcached cloud")
+            logger.info("daily transactions: loaded from memcached cloud")
         else:
-            logger.info("warming up cold cache")
+            logger.info("daily transactions: warming up cold cache")
             transactions = Transaction.objects.values('transaction_date').order_by('transaction_date').annotate(amount=Sum('amount'))
             transactions = self._zero_fill(transactions)
+            logger.info("daily transactions: setting cache")
+            cache.set(CacheKey.DAILY_TRANSACTIONS, transactions)
         return Response(transactions)
 
     def _zero_fill(self, transactions):
@@ -48,13 +50,15 @@ class ExpenseMonthlyView(APIView):
     def get(self, request):
         ret = cache.get(CacheKey.MONTHLY_TRANSACTIONS)
         if ret:
-            logger.info("loaded from memcached cloud")
+            logger.info("monthly expense: loaded from memcached cloud")
         else:
-            logger.info("warming up cold cache")
+            logger.info("monthly expense: warming up cold cache")
             ret = defaultdict(list)
             query = Transaction.objects.annotate(date=TruncMonth('transaction_date')).values('date', category=F('expense_type__name')).order_by('date').annotate(amount=Sum('amount'))
             for item in query:
                 year_month = str(item.pop('date'))[:7]
                 ret[year_month].append(item)
+            logger.info("monthly expense: setting cache")
+            cache.set(CacheKey.MONTHLY_TRANSACTIONS, ret)
         return Response(ret)
 
