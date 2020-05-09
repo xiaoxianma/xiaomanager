@@ -1,10 +1,10 @@
-import json
 from rest_framework import serializers
 from budgetmgr.models.transaction import (
     ExpenseType,
     Transaction,
     Merchant,
 )
+from budgetmgr.tasks import create_transaction_entry
 import logging
 
 logger = logging.getLogger(__name__)
@@ -45,12 +45,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         "tags": [],
         "notes": ""
         """
-        logger.info(f"creating transaction...")
-        logger.info(json.dumps(validated_data, indent=4, default=str))
-        merchant = validated_data.pop('merchant')
-        merchant_instance, created = Merchant.objects.get_or_create(**merchant)
-        transaction_instance = Transaction.objects.create(
-            **validated_data,
-            merchant=merchant_instance,
-        )
-        return transaction_instance
+        logger.info("forward transaction creation to celery")
+        create_transaction_entry.delay(validated_data)
+        logger.info("forward job completes")
+
