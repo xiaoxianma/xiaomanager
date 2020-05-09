@@ -34,4 +34,5 @@ TODO
 - React as Frontend UI
 - PostgreSQL as Database
 - Integrate Travis CI
+- Other techniques: memcached, celery, redis
 - Host on Heroku
