@@ -13,8 +13,9 @@ logger = logging.getLogger(__name__)
 def create_transaction_entry(serialized_data):
     logger.info("Celery Task: creating transaction entry")
     logger.info(f"creating transaction...")
-    logger.info(serialized_data, indent=4, default=str)
+    logger.info(serialized_data)
     data = json.loads(serialized_data)
+    logger.info(f"decoded data={data}")
     merchant = data.pop('merchant')
     merchant_instance, created = Merchant.objects.get_or_create(**merchant)
     transaction_instance = Transaction.objects.create(
