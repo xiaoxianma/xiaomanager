@@ -46,6 +46,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         "notes": ""
         """
         logger.info("forward transaction creation to celery")
-        create_transaction_entry.delay(validated_data)
+        instance = create_transaction_entry(validated_data)
         logger.info("forward job completes")
+        return instance
 

@@ -21,4 +21,4 @@ def create_transaction_entry(validated_data):
         merchant=merchant_instance,
     )
     logger.info(f"Celery Task: transaction(id={transaction_instance.id}) is created!")
-
+    return transaction_instance
