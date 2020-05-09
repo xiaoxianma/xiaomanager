@@ -10,14 +10,15 @@ logger = logging.getLogger(__name__)
 
 
 @app.task
-def create_transaction_entry(validated_data):
+def create_transaction_entry(serialized_data):
     logger.info("Celery Task: creating transaction entry")
     logger.info(f"creating transaction...")
-    logger.info(json.dumps(validated_data, indent=4, default=str))
-    merchant = validated_data.pop('merchant')
+    logger.info(serialized_data, indent=4, default=str)
+    data = json.loads(serialized_data)
+    merchant = data.pop('merchant')
     merchant_instance, created = Merchant.objects.get_or_create(**merchant)
     transaction_instance = Transaction.objects.create(
-        **validated_data,
+        **data,
         merchant=merchant_instance,
     )
     logger.info(f"Celery Task: transaction(id={transaction_instance.id}) is created!")

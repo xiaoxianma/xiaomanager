@@ -1,3 +1,4 @@
+import json
 from rest_framework import serializers
 from budgetmgr.models.transaction import (
     ExpenseType,
@@ -47,8 +48,9 @@ class TransactionSerializer(serializers.ModelSerializer):
         """
         logger.info("forward transaction creation to celery")
         try:
-            create_transaction_entry.delay(validated_data)
+            task_id = create_transaction_entry.delay(json.dumps(validated_data))
         except Exception as e:
             logger.error(e)
-        logger.info("forward job completes")
+            raise e
+        logger.info(f"forward task={task_id} completes")
 
