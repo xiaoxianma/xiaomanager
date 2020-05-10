@@ -47,14 +47,10 @@ class TransactionSerializer(serializers.ModelSerializer):
         "notes": ""
         """
         logger.info("forward transaction creation to celery")
-        try:
-            validated_data['account_id'] = validated_data.pop('account').id
-            validated_data['expense_type_id'] = validated_data.pop('expense_type').id
-            # date formate YYY-MM-DD
-            validated_data['transaction_date'] = validated_data['transaction_date'].strftime('%Y-%m-%d')
-            task_id = create_transaction_entry.delay(validated_data)
-        except Exception as e:
-            logger.error(e)
-            raise e
+        validated_data['account_id'] = validated_data.pop('account').id
+        validated_data['expense_type_id'] = validated_data.pop('expense_type').id
+        # date formate YYY-MM-DD
+        validated_data['transaction_date'] = validated_data['transaction_date'].strftime('%Y-%m-%d')
+        task_id = create_transaction_entry.delay(validated_data)
         logger.info(f"forward task={task_id} completes")
 

@@ -24,4 +24,4 @@ def create_transaction_entry(data):
         expense_type_id=expense_type_id
     )
     logger.info(f"Celery Task: transaction(id={transaction_instance.id}) is created!")
-    return transaction_instance
+    return transaction_instance.id
