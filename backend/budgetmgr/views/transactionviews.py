@@ -1,5 +1,7 @@
+import time
 from django.core.cache import cache
 from django_filters import rest_framework as filters
+from celery.result import AsyncResult
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -62,4 +64,17 @@ class TransactionViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         task_id = serializer.create(serializer.validated_data)
-        return Response({'task_id': task_id}, status=status.HTTP_201_CREATED)
+        # syncing although this should be another task
+        transaction_id = -1
+        end = time.time() + 20
+        while time.time() < end:
+            task_result = AsyncResult(task_id)
+            if task_result.ready():
+                transaction_id = task_result.result
+                break
+            logger.info("waiting for transaction creation ready...")
+            time.sleep(0.1)
+        logger.info(f"transaction_id={transaction_id}")
+        obj = Transaction.objects.get(id=transaction_id)
+        data = serializer(obj)
+        return Response(data, status=status.HTTP_201_CREATED)
