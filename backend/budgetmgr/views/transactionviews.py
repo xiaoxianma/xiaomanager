@@ -63,12 +63,13 @@ class TransactionViewSet(viewsets.ModelViewSet):
         cache.delete_many([CacheKey.DAILY_TRANSACTIONS, CacheKey.MONTHLY_TRANSACTIONS])
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        task_id = serializer.create(serializer.validated_data)
+        task = serializer.create(serializer.validated_data)
+        logger.info(f"celery task={task} is created")
         # syncing although this should be another task
         transaction_id = -1
         end = time.time() + 20
         while time.time() < end:
-            task_result = AsyncResult(task_id)
+            task_result = AsyncResult(task.id)
             if task_result.ready():
                 transaction_id = task_result.result
                 break
