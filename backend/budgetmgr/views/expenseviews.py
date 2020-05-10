@@ -21,7 +21,7 @@ class ExpenseDailyView(APIView):
     def get(self, request):
         transactions = cache.get(CacheKey.DAILY_TRANSACTIONS)
         if transactions:
-            logger.info("daily transactions: loaded from memcached cloud")
+            logger.info("daily transactions: loaded from cache server")
         else:
             logger.info("daily transactions: warming up cold cache")
             transactions = Transaction.objects.values('transaction_date').order_by('transaction_date').annotate(amount=Sum('amount'))
@@ -50,7 +50,7 @@ class ExpenseMonthlyView(APIView):
     def get(self, request):
         ret = cache.get(CacheKey.MONTHLY_TRANSACTIONS)
         if ret:
-            logger.info("monthly expense: loaded from memcached cloud")
+            logger.info("monthly expense: loaded from cache server")
         else:
             logger.info("monthly expense: warming up cold cache")
             ret = defaultdict(list)
