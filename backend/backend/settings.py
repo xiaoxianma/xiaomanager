@@ -221,17 +221,22 @@ CACHES = {
 #####################################################################
 # REDIS CONFIG
 #####################################################################
-REDIS_URL = os.environ.get('REDIS_URL', 'redis://127.0.0.1:6379')
+REDIS_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379')
 BROKER_CONNECTION_MAX_RETRIES = os.environ.get('BROKER_CONNECTION_MAX_RETRIES', None)
 BROKER_POOL_LIMIT = os.environ.get('BROKER_POOL_LIMIT', None)
 
 #####################################################################
 # CELERY CONFIG
 #####################################################################
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', REDIS_URL)
+# CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', REDIS_URL)
+BROKER_URL = os.environ.get('CELERY_BROKER_URL', REDIS_URL)
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', REDIS_URL)
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
 CELERY_REDIS_MAX_CONNECTIONS = os.environ.get('CELERY_REDIS_MAX_CONNECTIONS', 5)
 CELERY_CONCURRENCY = os.environ.get('CELERYD_CONCURRENCY', 1)
+CELERY_TIMEZONE = TIME_ZONE
 
 #####################################################################
 # Static files (CSS, JavaScript, Images)
