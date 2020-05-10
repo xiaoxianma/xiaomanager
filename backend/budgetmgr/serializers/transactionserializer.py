@@ -51,7 +51,7 @@ class TransactionSerializer(serializers.ModelSerializer):
             validated_data['account_id'] = validated_data['account'].id
             validated_data['expense_type_id'] = validated_data['expense_type'].id
             # date formate YYY-MM-DD
-            validated_data['transaction_date'] = validated_data['transaction_date'][:11]
+            validated_data['transaction_date'] = validated_data['transaction_date'].strftime('%Y-%m-%d')
             task_id = create_transaction_entry.delay(validated_data)
         except Exception as e:
             logger.error(e)
