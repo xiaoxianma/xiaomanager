@@ -48,7 +48,9 @@ class TransactionSerializer(serializers.ModelSerializer):
         """
         logger.info("forward transaction creation to celery")
         try:
-            task_id = create_transaction_entry.delay(json.dumps(validated_data, indent=4, default=str))
+            validated_data['account'] = validated_data['account'].id
+            validated_data['expense_type'] = validated_data['expense_type'].id
+            task_id = create_transaction_entry.delay(validated_data)
         except Exception as e:
             logger.error(e)
             raise e
