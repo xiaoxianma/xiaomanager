@@ -239,6 +239,11 @@ CELERY_CONCURRENCY = os.environ.get('CELERYD_CONCURRENCY', 1)
 CELERY_TIMEZONE = TIME_ZONE
 
 #####################################################################
+# Configure app for Heroku deployment, end just before static files
+#####################################################################
+django_heroku.settings(locals(), logging=False)
+
+#####################################################################
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 #####################################################################
@@ -252,10 +257,3 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'build', 'media')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-#####################################################################
-# Configure app for Heroku deployment, to the end
-#####################################################################
-django_heroku.settings(locals(), logging=False)
-
