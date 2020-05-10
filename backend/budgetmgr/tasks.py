@@ -13,8 +13,8 @@ def create_transaction_entry(data):
     logger.info("Celery Task: creating transaction entry")
     logger.info(f"creating transaction...")
     logger.info(data)
-    account_id = data.pop('account')
-    expense_type_id = data.pop('expense_type')
+    account_id = data.pop('account_id')
+    expense_type_id = data.pop('expense_type_id')
     merchant = data.pop('merchant')
     merchant_instance, created = Merchant.objects.get_or_create(**merchant)
     transaction_instance = Transaction.objects.create(
