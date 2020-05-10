@@ -1,6 +1,6 @@
 from django.core.cache import cache
 from django_filters import rest_framework as filters
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -59,4 +59,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         logger.info("deleting daily&monthly expense cache...")
         cache.delete_many([CacheKey.DAILY_TRANSACTIONS, CacheKey.MONTHLY_TRANSACTIONS])
-        return super().create(request, *args, **kwargs)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        task_id = serializer.create(serializer.validated_data)
+        return Response({'task_id': task_id}, status=status.HTTP_201_CREATED)

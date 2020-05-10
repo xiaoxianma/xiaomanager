@@ -52,5 +52,7 @@ class TransactionSerializer(serializers.ModelSerializer):
         # date formate YYY-MM-DD
         validated_data['transaction_date'] = validated_data['transaction_date'].strftime('%Y-%m-%d')
         task_id = create_transaction_entry.delay(validated_data)
-        logger.info(f"forward task={task_id} completes")
+        logger.info(f"forward task_id={task_id} completes")
+        return task_id
+
 
