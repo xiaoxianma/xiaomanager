@@ -77,5 +77,5 @@ class TransactionViewSet(viewsets.ModelViewSet):
             time.sleep(0.1)
         logger.info(f"transaction_id={transaction_id}")
         obj = Transaction.objects.get(id=transaction_id)
-        data = serializer(obj)
+        data = TransactionSerializer(instance=obj).data
         return Response(data, status=status.HTTP_201_CREATED)
