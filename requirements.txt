@@ -21,3 +21,4 @@ django-bmemcached==0.3.0
 python-binary-memcached==0.29.0
 celery==4.4.2
 redis==3.5.0
+django-redis==4.11.0

@@ -202,19 +202,17 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-
 #####################################################################
 # MEMCACHED CONFIG
 #####################################################################
 CACHES = {
-    'default': {
-        'BACKEND': 'django_bmemcached.memcached.BMemcached',
-        'LOCATION': os.environ.get('MEMCACHEDCLOUD_SERVERS', '').split(','),
-        'OPTIONS': {
-                    'username': os.environ.get('MEMCACHEDCLOUD_USERNAME'),
-                    'password': os.environ.get('MEMCACHEDCLOUD_PASSWORD')
-            }
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ['REDIS_URL'],  # Here we have Redis DSN (for ex. redis://localhost:6379/1)
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "MAX_ENTRIES": 1000  # Increase max cache entries to 1k (from 300)
+        },
     }
 }
 
@@ -230,6 +228,7 @@ BROKER_POOL_LIMIT = os.environ.get('BROKER_POOL_LIMIT', None)
 #####################################################################
 # CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', REDIS_URL)
 BROKER_URL = os.environ.get('CELERY_BROKER_URL', REDIS_URL)
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', REDIS_URL)
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', REDIS_URL)
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
