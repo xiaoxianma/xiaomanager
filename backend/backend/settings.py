@@ -231,7 +231,7 @@ BROKER_POOL_LIMIT = os.environ.get('BROKER_POOL_LIMIT', None)
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', REDIS_URL)
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', REDIS_URL)
 CELERY_REDIS_MAX_CONNECTIONS = os.environ.get('CELERY_REDIS_MAX_CONNECTIONS', 5)
-CELERYD_CONCURRENCY = os.environ.get('CELERYD_CONCURRENCY', 1)
+CELERY_CONCURRENCY = os.environ.get('CELERYD_CONCURRENCY', 1)
 
 #####################################################################
 # Static files (CSS, JavaScript, Images)
