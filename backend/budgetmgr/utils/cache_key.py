@@ -1,6 +1,0 @@
-from enum import Enum
-
-
-class CacheKey(Enum):
-    DAILY_TRANSACTIONS = 'DAILY_TRANSACTIONS'
-    MONTHLY_TRANSACTIONS = 'MONTHLY_TRANSACTIONS'

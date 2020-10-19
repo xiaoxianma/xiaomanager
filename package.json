@@ -1,8 +1,0 @@
-{
-  "name": "xiaomanager",
-  "private": true,
-  "description": "this is only for Heroku to build frontend use",
-  "scripts": {
-    "heroku-prebuild": "NODE_ENV=production cd frontend/ && yarn install && yarn build && cd .."
-  }
-}
