@@ -1,3 +1,4 @@
+import sys
 import os
 from logging.config import fileConfig
 
@@ -5,7 +6,8 @@ from alembic import context
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
-from app.db.models import Base
+sys.path.insert(0, ".")
+from app.core.config import SQLALCHEMY_DATABASE_URI
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -19,6 +21,12 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
+from app.db.models.account import Base
+from app.db.models.transaction import Base
+from app.db.models.user import Base
+from app.db.session import Base
+# from app.db.models.account import Base as AccountBase
+# from app.db.models.transaction import Base as TransactionBase
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
@@ -28,7 +36,7 @@ target_metadata = Base.metadata
 
 
 def get_url():
-    return os.getenv("DATABASE_URL")
+    return SQLALCHEMY_DATABASE_URI
 
 
 def run_migrations_offline():
