@@ -1,8 +1,8 @@
+import app.db.models.user as user_model
+import app.db.schemas.user as user_schema
 import jwt
 from app.core import security
 from app.db import session
-import app.db.models.user as user_model
-import app.db.schemas.user as user_schema
 from app.db.crud.user import create_user, get_user_by_email
 from fastapi import Depends, HTTPException, status
 from jwt import PyJWTError
