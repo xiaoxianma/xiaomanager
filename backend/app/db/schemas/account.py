@@ -1,8 +1,8 @@
-from datetime import datetime
-from pydantic import BaseModel
 import typing as t
+from datetime import datetime
 
 from app.db.models.account import AccountType
+from pydantic import BaseModel
 
 
 class InstitutionBase(BaseModel):
@@ -16,10 +16,6 @@ class InstitutionItem(InstitutionBase):
         orm_mode = True
 
 
-class InstitutionList(BaseModel):
-    __root__: t.List[InstitutionItem]
-
-
 class AccountOwnerBase(BaseModel):
     name: str
 
@@ -29,10 +25,6 @@ class AccountOwnerItem(AccountOwnerBase):
 
     class Config:
         orm_mode = True
-
-
-class AccountOwnerList(BaseModel):
-    __root__: t.List[AccountOwnerItem]
 
 
 class AccountBase(BaseModel):
@@ -50,10 +42,6 @@ class AccountItem(AccountBase):
         orm_mode = True
 
 
-class AccountList(BaseModel):
-    __root__: t.List[AccountItem]
-
-
 class RewardTypeBase(BaseModel):
     name: str
 
@@ -63,10 +51,6 @@ class RewardTypeItem(RewardTypeBase):
 
     class Config:
         orm_mode = True
-
-
-class RewardTypeList(BaseModel):
-    __root__: t.List[RewardTypeItem]
 
 
 class RewardBase(BaseModel):
@@ -83,7 +67,3 @@ class RewardItem(RewardBase):
 
     class Config:
         orm_mode = True
-
-
-class RewardList(BaseModel):
-    __root__: t.List[RewardItem]

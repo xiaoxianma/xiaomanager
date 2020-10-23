@@ -13,7 +13,11 @@ def get_all_items(db: Session, model: Base, skip: int = 0, limit: int = 100):
 def get_item(db: Session, model: Base, _id: int):
     item = db.query(model).filter(model.id == _id).first()
     if not item:
-        raise HTTPException(status_code=404, detail=f"id={_id} is not found in {model.__tablename__}")
+        raise HTTPException(
+            status_code=404,
+            detail=f"id={_id} is not found in {model.__tablename__}",
+        )
+    return item
 
 
 def get_item_by_name(db: Session, model: Base, name: str):
@@ -24,5 +28,20 @@ def create_item(db: Session, model: Base, payload: BaseModel):
     db_item = model(**payload.dict())
     db.add(db_item)
     db.commit()
-    db.refresh(db_item)
+    return db_item
+
+
+def update_item(db: Session, model: Base, _id: int, payload: BaseModel):
+    db_item = get_item(db, model, _id)
+    update_data = payload.dict(exclude_unset=True)
+    for k, v in update_data.items():
+        setattr(db_item, k, v)
+    db.commit()
+    return db_item
+
+
+def delete_item(db: Session, model: Base, _id: int):
+    db_item = get_item(db, model, _id)
+    db.delete(db_item)
+    db.commit()
     return db_item

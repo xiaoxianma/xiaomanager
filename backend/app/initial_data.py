@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 import sys
+
 sys.path.insert(0, ".")
 
-from app.db.session import get_db
 from app.db.crud.user import create_user
 from app.db.schemas.user import UserCreate
-from app.db.session import SessionLocal
+from app.db.session import SessionLocal, get_db
 
 
 def init() -> None:

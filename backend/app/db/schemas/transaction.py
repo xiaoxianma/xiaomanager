@@ -1,6 +1,7 @@
-from datetime import datetime
-from pydantic import BaseModel
 import typing as t
+from datetime import datetime
+
+from pydantic import BaseModel
 
 
 class ExpenseTypeBase(BaseModel):
@@ -20,7 +21,7 @@ class ExpenseTypeList(BaseModel):
 
 class MerchantBase(BaseModel):
     city: str
-    country: str = 'US'
+    country: str = "US"
 
 
 class MerchantItem(BaseModel):

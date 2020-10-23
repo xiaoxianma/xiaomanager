@@ -1,10 +1,9 @@
-import sys
 import os
+import sys
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import engine_from_config, pool
 
 sys.path.insert(0, ".")
 from app.core.config import SQLALCHEMY_DATABASE_URI
@@ -25,6 +24,7 @@ from app.db.models.account import Base
 from app.db.models.transaction import Base
 from app.db.models.user import Base
 from app.db.session import Base
+
 # from app.db.models.account import Base as AccountBase
 # from app.db.models.transaction import Base as TransactionBase
 target_metadata = Base.metadata

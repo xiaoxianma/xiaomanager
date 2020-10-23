@@ -1,17 +1,18 @@
 import sys
+
 sys.path.insert(0, "../")
 import uvicorn
-from fastapi import Depends, FastAPI
-from starlette.requests import Request
-
 from app import tasks
-from app.api.api_v1.routers.account import account_router
+from app.api.api_v1.routers import account
 from app.api.api_v1.routers.auth import auth_router
 from app.api.api_v1.routers.users import users_router
+from app.api.utils import register_router
 from app.core import config
 from app.core.auth import get_current_active_user
 from app.core.celery_app import celery_app
 from app.db.session import SessionLocal
+from fastapi import Depends, FastAPI
+from starlette.requests import Request
 
 app = FastAPI(
     title=config.PROJECT_NAME, docs_url="/api/docs", openapi_url="/api"
@@ -46,7 +47,8 @@ app.include_router(
     dependencies=[Depends(get_current_active_user)],
 )
 app.include_router(auth_router, prefix="/api", tags=["auth"])
-app.include_router(account_router, prefix="/api", tags=["account"])
+register_router(app, account.AccountViewSet)
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", reload=True, port=8888)

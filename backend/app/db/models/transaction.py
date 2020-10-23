@@ -1,8 +1,7 @@
-from sqlalchemy.sql.schema import CheckConstraint, Column, ForeignKey
-from sqlalchemy.sql.sqltypes import Integer, String, Float, DateTime, Text
-from sqlalchemy_utils import CountryType
-
 from app.db.session import Base
+from sqlalchemy.sql.schema import CheckConstraint, Column, ForeignKey
+from sqlalchemy.sql.sqltypes import DateTime, Float, Integer, String, Text
+from sqlalchemy_utils import CountryType
 
 
 class ExpenseType(Base):
@@ -23,18 +22,21 @@ class Merchant(Base):
     country = Column(CountryType)
 
     def __str__(self) -> str:
-        return f"{self.name}|{self.city}|{self.country}".replace('||', '|')
+        return f"{self.name}|{self.city}|{self.country}".replace("||", "|")
 
 
 class Transaction(Base):
     __tablename__ = "transaction"
 
-
     id = Column(Integer, primary_key=True, index=True)
     amount = Column(Float)
     account_id = Column(Integer, ForeignKey("account.id", ondelete="SET NULL"))
-    merchant_id = Column(Integer, ForeignKey("merchant.id", ondelete="SET NULL"))
-    expense_type_id = Column(Integer, ForeignKey("expensetype.id", ondelete="SET NULL"))
+    merchant_id = Column(
+        Integer, ForeignKey("merchant.id", ondelete="SET NULL")
+    )
+    expense_type_id = Column(
+        Integer, ForeignKey("expensetype.id", ondelete="SET NULL")
+    )
     transaction_date = Column(DateTime(timezone=True), nullable=False)
     coupon = Column(Integer)
     tags = Column(String)
@@ -42,5 +44,5 @@ class Transaction(Base):
     created = Column(DateTime(timezone=True), nullable=False)
 
     __table_args__ = (
-        CheckConstraint(coupon > 0, name='check_coupon_positive'),
+        CheckConstraint(coupon > 0, name="check_coupon_positive"),
     )

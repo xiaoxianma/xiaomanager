@@ -1,5 +1,6 @@
 from app.core import security
 
+
 # Monkey patch function we can use to shave a second off our tests by skipping the password hashing check
 def verify_password_mock(first: str, second: str):
     return True
@@ -43,9 +44,7 @@ def test_resignup(client, test_user, monkeypatch):
     assert response.status_code == 409
 
 
-def test_wrong_password(
-    client, test_db, test_user, test_password, monkeypatch
-):
+def test_wrong_password(client, test_db, test_user, test_password, monkeypatch):
     def verify_password_failed_mock(first: str, second: str):
         return False
 

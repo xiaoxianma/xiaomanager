@@ -1,21 +1,25 @@
-from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
 import typing as t
 
 import app.db.models.user as user_model
 import app.db.schemas.user as user_schema
 from app.core.security import get_password_hash
+from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
 
 
 def get_user(db: Session, user_id: int):
-    user = db.query(user_model.User).filter(user_model.User.id == user_id).first()
+    user = (
+        db.query(user_model.User).filter(user_model.User.id == user_id).first()
+    )
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
 
 def get_user_by_email(db: Session, email: str) -> user_schema.UserBase:
-    return db.query(user_model.User).filter(user_model.User.email == email).first()
+    return (
+        db.query(user_model.User).filter(user_model.User.email == email).first()
+    )
 
 
 def get_users(
