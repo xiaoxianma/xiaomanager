@@ -11,3 +11,11 @@ class AccountViewSet(ModelViewSet):
     GET_SCHEMA_OUT = account_schema.InstitutionItem
     POST_SCHEMA_IN = account_schema.InstitutionBase
     PATCH_SCHEMA_IN = account_schema.InstitutionBase
+
+
+class AccountOwnerViewSet(ModelViewSet):
+    TAG = "account"
+    MODEL = account_model.AccountOwner
+    GET_SCHEMA_OUT = account_schema.AccountOwnerItem
+    POST_SCHEMA_IN = account_schema.AccountOwnerBase
+    PATCH_SCHEMA_IN = account_schema.AccountOwnerBase

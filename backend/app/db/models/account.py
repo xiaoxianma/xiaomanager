@@ -3,26 +3,23 @@ import enum
 from app.db.session import Base
 from sqlalchemy.sql.schema import CheckConstraint, Column, ForeignKey
 from sqlalchemy.sql.sqltypes import DateTime, Enum, Integer, String, Text
+from sqlalchemy_utils import generic_repr
 
 
+@generic_repr
 class Institution(Base):
     __tablename__ = "institution"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True)
 
-    def __str__(self) -> str:
-        return self.name
 
-
+@generic_repr
 class AccountOwner(Base):
     __tablename__ = "accountowner"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True)
-
-    def __str__(self) -> str:
-        return self.name
 
 
 class AccountType(enum.Enum):
@@ -33,6 +30,7 @@ class AccountType(enum.Enum):
     saving = "SAVE"
 
 
+@generic_repr
 class Account(Base):
     __tablename__ = "account"
 
@@ -47,23 +45,16 @@ class Account(Base):
     number = Column(String)
     alias = Column(String)
 
-    def __str__(self) -> str:
-        ret = f"{self.owner}|{self.institution}|{self.account_type}"
-        if self.alias:
-            ret = f"{ret}|{self.alias}"
-        return ret
 
-
+@generic_repr
 class RewardType(Base):
     __tablename__ = "rewardtype"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True)
 
-    def __str__(self) -> str:
-        return self.name
 
-
+@generic_repr
 class Reward(Base):
     __tablename__ = "reward"
 
@@ -80,10 +71,3 @@ class Reward(Base):
     __table_args__ = (
         CheckConstraint(xpoints > 0, name="check_xponits_positive"),
     )
-
-    def __str__(self) -> str:
-        if self.end_time:
-            active_period = f"{self.end_time.year}-{self.end_time.month:02d}-{self.end_time.day:02d}"
-        else:
-            active_period = "4ever"
-        return f"{self.account}|{active_period}|{self.reward_type}"

@@ -1,19 +1,18 @@
 from app.db.session import Base
 from sqlalchemy.sql.schema import CheckConstraint, Column, ForeignKey
 from sqlalchemy.sql.sqltypes import DateTime, Float, Integer, String, Text
-from sqlalchemy_utils import CountryType
+from sqlalchemy_utils import CountryType, generic_repr
 
 
+@generic_repr
 class ExpenseType(Base):
     __tablename__ = "expensetype"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True)
 
-    def __str__(self) -> str:
-        return self.name
 
-
+@generic_repr
 class Merchant(Base):
     __tablename__ = "merchant"
 
@@ -21,10 +20,8 @@ class Merchant(Base):
     city = Column(String)
     country = Column(CountryType)
 
-    def __str__(self) -> str:
-        return f"{self.name}|{self.city}|{self.country}".replace("||", "|")
 
-
+@generic_repr
 class Transaction(Base):
     __tablename__ = "transaction"
 
