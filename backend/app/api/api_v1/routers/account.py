@@ -1,8 +1,6 @@
-import typing as t
-
 import app.db.models.account as account_model
 import app.db.schemas.account as account_schema
-from app.api.utils import ModelViewSet
+from app.utils.view import ModelViewSet
 
 
 class AccountViewSet(ModelViewSet):

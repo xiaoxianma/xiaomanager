@@ -10,7 +10,6 @@ class InstitutionBase(BaseModel):
 
 
 class InstitutionItem(InstitutionBase):
-
     class Config:
         orm_mode = True
 
@@ -20,7 +19,6 @@ class AccountOwnerBase(BaseModel):
 
 
 class AccountOwnerItem(AccountOwnerBase):
-
     class Config:
         orm_mode = True
 
@@ -34,7 +32,6 @@ class AccountBase(BaseModel):
 
 
 class AccountItem(AccountBase):
-
     class Config:
         orm_mode = True
 
@@ -44,7 +41,6 @@ class RewardTypeBase(BaseModel):
 
 
 class RewardTypeItem(RewardTypeBase):
-
     class Config:
         orm_mode = True
 
@@ -59,6 +55,5 @@ class RewardBase(BaseModel):
 
 
 class RewardItem(RewardBase):
-
     class Config:
         orm_mode = True

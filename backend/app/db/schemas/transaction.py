@@ -9,7 +9,6 @@ class ExpenseTypeBase(BaseModel):
 
 
 class ExpenseTypeItem(ExpenseTypeBase):
-
     class Config:
         orm_mode = True
 
@@ -20,7 +19,6 @@ class MerchantBase(BaseModel):
 
 
 class MerchantItem(BaseModel):
-
     class Config:
         orm_mode = True
 
@@ -36,6 +34,5 @@ class TransactionBase(BaseModel):
 
 
 class TransactionItem(TransactionBase):
-
     class Config:
         orm_mode = True
