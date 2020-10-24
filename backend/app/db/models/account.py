@@ -44,8 +44,8 @@ class Account(Base):
     number = Column(String)
     alias = Column(String)
 
-    institution = relationship("Institution", back_populates="account")
-    account_owner = relationship("AccountOwner", back_populates="account")
+    institution = relationship(Institution, backref="account")
+    account_owner = relationship(AccountOwner, backref="account")
 
 
 @generic_repr

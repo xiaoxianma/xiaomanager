@@ -1,4 +1,6 @@
+from app.db.models.account import Account
 from app.db.session import Base
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import CheckConstraint, Column, ForeignKey
 from sqlalchemy.sql.sqltypes import DateTime, Float, Integer, String, Text
 from sqlalchemy_utils import CountryType, generic_repr
@@ -35,5 +37,9 @@ class Transaction(Base):
     tags = Column(String)
     notes = Column(Text)
     created = Column(DateTime(timezone=True), nullable=False)
+
+    account = relationship(Account, backref="transaction")
+    merchant = relationship(Merchant, backref="transaction")
+    expense_type =  relationship(ExpenseType, backref="transaction")
 
     __table_args__ = (CheckConstraint(coupon > 0, name="check_coupon_positive"),)

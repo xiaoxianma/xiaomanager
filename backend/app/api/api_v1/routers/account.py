@@ -31,8 +31,8 @@ class RewardTypeViewSet(ModelViewSet):
     ENDPOINT = "reward-type"
     MODEL = account_model.RewardType
     GET_SCHEMA_OUT = account_schema.RewardTypeItem
-    POST_SCHEMA_IN = account_schema.RewardBase
-    PATCH_SCHEMA_IN = account_schema.RewardBase
+    POST_SCHEMA_IN = account_schema.RewardTypeBase
+    PATCH_SCHEMA_IN = account_schema.RewardTypeBase
 
 
 class RewardViewSet(ModelViewSet):

@@ -21,7 +21,6 @@ class ModelViewSet:
     def register(self):
         @self.r.get(f"/{self.ENDPOINT}s", response_model=t.List[self.GET_SCHEMA_OUT])
         async def get_all(db=Depends(get_db)):
-            breakpoint()
             return crud_utils.get_all_items(db, self.MODEL)
 
         @self.r.get(

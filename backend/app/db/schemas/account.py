@@ -10,9 +10,8 @@ class InstitutionBase(BaseModel):
 
 
 class InstitutionItem(InstitutionBase):
-    pass
-    # class Config:
-    # orm_mode = True
+    class Config:
+        orm_mode = True
 
 
 class AccountOwnerBase(BaseModel):
