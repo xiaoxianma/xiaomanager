@@ -3,8 +3,9 @@ import app.db.schemas.account as account_schema
 from app.utils.view import ModelViewSet
 
 
-class AccountViewSet(ModelViewSet):
+class InstitutionViewSet(ModelViewSet):
     TAG = "account"
+    ENDPOINT = "instution"
     MODEL = account_model.Institution
     GET_SCHEMA_OUT = account_schema.InstitutionItem
     POST_SCHEMA_IN = account_schema.InstitutionBase
@@ -13,6 +14,7 @@ class AccountViewSet(ModelViewSet):
 
 class AccountOwnerViewSet(ModelViewSet):
     TAG = "account"
+    ENDPOINT = "accountowner"
     MODEL = account_model.AccountOwner
     GET_SCHEMA_OUT = account_schema.AccountOwnerItem
     POST_SCHEMA_IN = account_schema.AccountOwnerBase
