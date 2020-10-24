@@ -47,7 +47,7 @@ app.include_router(
     dependencies=[Depends(get_current_active_user)],
 )
 app.include_router(auth_router, prefix="/api", tags=["auth"])
-register_router(app, [*route_v1.route])
+register_router(app, "v1", [*route_v1.route])
 
 
 if __name__ == "__main__":

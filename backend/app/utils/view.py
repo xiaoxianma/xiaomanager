@@ -8,13 +8,15 @@ from pydantic import BaseModel
 
 
 class ModelViewSet:
-    r = APIRouter()
     TAG: str
     ENDPOINT: str
     MODEL: Base
     GET_SCHEMA_OUT: BaseModel
     POST_SCHEMA_IN: BaseModel
     PATCH_SCHEMA_IN: BaseModel
+
+    def __init__(self):
+        self.r = APIRouter()
 
     def register(self):
         @self.r.get(f"/{self.ENDPOINT}s", response_model=t.List[self.GET_SCHEMA_OUT])
@@ -46,8 +48,8 @@ class ModelViewSet:
             return crud_utils.delete_item(db, self.MODEL, inst_id)
 
 
-def register_router(app: FastAPI, viewsets: t.List[ModelViewSet]):
+def register_router(app: FastAPI, api_version: str, viewsets: t.List[ModelViewSet]):
     for viewset in viewsets:
         viewset_instance = viewset()
         viewset_instance.register()
-        app.include_router(viewset_instance.r, prefix="/api", tags=[viewset_instance.TAG])
+        app.include_router(viewset_instance.r, prefix=f"/api/{api_version}", tags=[viewset_instance.TAG])

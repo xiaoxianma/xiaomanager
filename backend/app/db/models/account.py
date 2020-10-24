@@ -3,6 +3,7 @@ import enum
 from app.db.session import Base
 from sqlalchemy.sql.schema import CheckConstraint, Column, ForeignKey
 from sqlalchemy.sql.sqltypes import DateTime, Enum, Integer, String, Text
+from sqlalchemy.orm import relationship
 from sqlalchemy_utils import generic_repr
 
 
@@ -44,6 +45,9 @@ class Account(Base):
     account_type = Column(Enum(AccountType))
     number = Column(String)
     alias = Column(String)
+
+    institution = relationship("Institution", back_populates="account")
+    account_owner = relationship("AccountOwner", back_populates="account")
 
 
 @generic_repr
