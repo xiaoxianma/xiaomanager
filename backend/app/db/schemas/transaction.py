@@ -9,14 +9,9 @@ class ExpenseTypeBase(BaseModel):
 
 
 class ExpenseTypeItem(ExpenseTypeBase):
-    id: int
 
     class Config:
         orm_mode = True
-
-
-class ExpenseTypeList(BaseModel):
-    __root__: t.List[ExpenseTypeItem]
 
 
 class MerchantBase(BaseModel):
@@ -25,14 +20,9 @@ class MerchantBase(BaseModel):
 
 
 class MerchantItem(BaseModel):
-    id: int
 
     class Config:
         orm_mode = True
-
-
-class MerchantList(BaseModel):
-    __root__: t.List[MerchantItem]
 
 
 class TransactionBase(BaseModel):
@@ -46,11 +36,6 @@ class TransactionBase(BaseModel):
 
 
 class TransactionItem(TransactionBase):
-    id: int
 
     class Config:
         orm_mode = True
-
-
-class TransactionList(BaseModel):
-    __root__: t.List[TransactionItem]

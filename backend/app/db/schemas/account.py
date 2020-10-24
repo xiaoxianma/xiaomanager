@@ -10,7 +10,6 @@ class InstitutionBase(BaseModel):
 
 
 class InstitutionItem(InstitutionBase):
-    id: int
 
     class Config:
         orm_mode = True
@@ -21,7 +20,6 @@ class AccountOwnerBase(BaseModel):
 
 
 class AccountOwnerItem(AccountOwnerBase):
-    id: int
 
     class Config:
         orm_mode = True
@@ -32,11 +30,10 @@ class AccountBase(BaseModel):
     account_owner_id: int
     account_type: AccountType
     number: str
-    alias: str = None
+    alias: t.Optional[str] = None
 
 
 class AccountItem(AccountBase):
-    id: int
 
     class Config:
         orm_mode = True
@@ -47,7 +44,6 @@ class RewardTypeBase(BaseModel):
 
 
 class RewardTypeItem(RewardTypeBase):
-    id: int
 
     class Config:
         orm_mode = True
@@ -59,11 +55,10 @@ class RewardBase(BaseModel):
     xpoints: int
     start_time: datetime
     end_time: datetime
-    description: str = None
+    description: t.Optional[str] = None
 
 
 class RewardItem(RewardBase):
-    id: int
 
     class Config:
         orm_mode = True
