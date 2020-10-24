@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 
 class ModelViewSet:
-    TAG: str
+    TAG: str = None
     ENDPOINT: str
     MODEL: Base
     GET_SCHEMA_OUT: BaseModel
@@ -52,4 +52,5 @@ def register_router(app: FastAPI, api_version: str, viewsets: t.List[ModelViewSe
     for viewset in viewsets:
         viewset_instance = viewset()
         viewset_instance.register()
-        app.include_router(viewset_instance.r, prefix=f"/api/{api_version}", tags=[viewset_instance.TAG])
+        tag = viewset_instance.TAG or viewset_instance.ENDPOINT
+        app.include_router(viewset_instance.r, prefix=f"/api/{api_version}", tags=[tag])
