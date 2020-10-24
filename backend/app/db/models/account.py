@@ -1,9 +1,9 @@
 import enum
 
 from app.db.session import Base
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import CheckConstraint, Column, ForeignKey
 from sqlalchemy.sql.sqltypes import DateTime, Enum, Integer, String, Text
-from sqlalchemy.orm import relationship
 from sqlalchemy_utils import generic_repr
 
 
@@ -36,9 +36,7 @@ class Account(Base):
     __tablename__ = "account"
 
     id = Column(Integer, primary_key=True, index=True)
-    institution_id = Column(
-        Integer, ForeignKey("institution.id", ondelete="SET NULL")
-    )
+    institution_id = Column(Integer, ForeignKey("institution.id", ondelete="SET NULL"))
     account_owner_id = Column(
         Integer, ForeignKey("accountowner.id", ondelete="SET NULL")
     )
@@ -64,14 +62,10 @@ class Reward(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     account_id = Column(Integer, ForeignKey("account.id", ondelete="SET NULL"))
-    reward_type_id = Column(
-        Integer, ForeignKey("rewardtype.id", ondelete="SET NULL")
-    )
+    reward_type_id = Column(Integer, ForeignKey("rewardtype.id", ondelete="SET NULL"))
     xpoints = Column(Integer)
     start_time = Column(DateTime(timezone=True), nullable=False)
     end_time = Column(DateTime(timezone=True), nullable=True)
     description = Column(Text)
 
-    __table_args__ = (
-        CheckConstraint(xpoints > 0, name="check_xponits_positive"),
-    )
+    __table_args__ = (CheckConstraint(xpoints > 0, name="check_xponits_positive"),)

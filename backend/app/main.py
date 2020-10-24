@@ -2,22 +2,19 @@ import sys
 
 sys.path.insert(0, "../")
 import uvicorn
-from fastapi import Depends, FastAPI
-from starlette.requests import Request
-
 from app import tasks
+from app.api.api_v1.routers import route as route_v1
 from app.api.api_v1.routers.auth import auth_router
 from app.api.api_v1.routers.users import users_router
 from app.core import config
 from app.core.auth import get_current_active_user
 from app.core.celery_app import celery_app
-from app.utils.view import register_router
 from app.db.session import SessionLocal
-from app.api.api_v1.routers import route as route_v1
+from app.utils.view import register_router
+from fastapi import Depends, FastAPI
+from starlette.requests import Request
 
-app = FastAPI(
-    title=config.PROJECT_NAME, docs_url="/api/docs", openapi_url="/api"
-)
+app = FastAPI(title=config.PROJECT_NAME, docs_url="/api/docs", openapi_url="/api")
 
 
 @app.middleware("http")

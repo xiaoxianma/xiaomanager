@@ -28,18 +28,12 @@ class Transaction(Base):
     id = Column(Integer, primary_key=True, index=True)
     amount = Column(Float)
     account_id = Column(Integer, ForeignKey("account.id", ondelete="SET NULL"))
-    merchant_id = Column(
-        Integer, ForeignKey("merchant.id", ondelete="SET NULL")
-    )
-    expense_type_id = Column(
-        Integer, ForeignKey("expensetype.id", ondelete="SET NULL")
-    )
+    merchant_id = Column(Integer, ForeignKey("merchant.id", ondelete="SET NULL"))
+    expense_type_id = Column(Integer, ForeignKey("expensetype.id", ondelete="SET NULL"))
     transaction_date = Column(DateTime(timezone=True), nullable=False)
     coupon = Column(Integer)
     tags = Column(String)
     notes = Column(Text)
     created = Column(DateTime(timezone=True), nullable=False)
 
-    __table_args__ = (
-        CheckConstraint(coupon > 0, name="check_coupon_positive"),
-    )
+    __table_args__ = (CheckConstraint(coupon > 0, name="check_coupon_positive"),)

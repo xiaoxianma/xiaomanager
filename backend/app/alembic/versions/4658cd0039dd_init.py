@@ -25,9 +25,7 @@ def upgrade():
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("name"),
     )
-    op.create_index(
-        op.f("ix_accountowner_id"), "accountowner", ["id"], unique=False
-    )
+    op.create_index(op.f("ix_accountowner_id"), "accountowner", ["id"], unique=False)
     op.create_table(
         "expensetype",
         sa.Column("id", sa.Integer(), nullable=False),
@@ -35,9 +33,7 @@ def upgrade():
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("name"),
     )
-    op.create_index(
-        op.f("ix_expensetype_id"), "expensetype", ["id"], unique=False
-    )
+    op.create_index(op.f("ix_expensetype_id"), "expensetype", ["id"], unique=False)
     op.create_table(
         "institution",
         sa.Column("id", sa.Integer(), nullable=False),
@@ -45,9 +41,7 @@ def upgrade():
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("name"),
     )
-    op.create_index(
-        op.f("ix_institution_id"), "institution", ["id"], unique=False
-    )
+    op.create_index(op.f("ix_institution_id"), "institution", ["id"], unique=False)
     op.create_table(
         "merchant",
         sa.Column("id", sa.Integer(), nullable=False),
@@ -67,9 +61,7 @@ def upgrade():
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("name"),
     )
-    op.create_index(
-        op.f("ix_rewardtype_id"), "rewardtype", ["id"], unique=False
-    )
+    op.create_index(op.f("ix_rewardtype_id"), "rewardtype", ["id"], unique=False)
     op.create_table(
         "user",
         sa.Column("id", sa.Integer(), nullable=False),
@@ -121,9 +113,7 @@ def upgrade():
         sa.Column("end_time", sa.DateTime(timezone=True), nullable=True),
         sa.Column("description", sa.Text(), nullable=True),
         sa.CheckConstraint("xpoints > 0", name="check_xponits_positive"),
-        sa.ForeignKeyConstraint(
-            ["account_id"], ["account.id"], ondelete="SET NULL"
-        ),
+        sa.ForeignKeyConstraint(["account_id"], ["account.id"], ondelete="SET NULL"),
         sa.ForeignKeyConstraint(
             ["reward_type_id"], ["rewardtype.id"], ondelete="SET NULL"
         ),
@@ -137,28 +127,20 @@ def upgrade():
         sa.Column("account_id", sa.Integer(), nullable=True),
         sa.Column("merchant_id", sa.Integer(), nullable=True),
         sa.Column("expense_type_id", sa.Integer(), nullable=True),
-        sa.Column(
-            "transaction_date", sa.DateTime(timezone=True), nullable=False
-        ),
+        sa.Column("transaction_date", sa.DateTime(timezone=True), nullable=False),
         sa.Column("coupon", sa.Integer(), nullable=True),
         sa.Column("tags", sa.String(), nullable=True),
         sa.Column("notes", sa.Text(), nullable=True),
         sa.Column("created", sa.DateTime(timezone=True), nullable=False),
         sa.CheckConstraint("coupon > 0", name="check_coupon_positive"),
-        sa.ForeignKeyConstraint(
-            ["account_id"], ["account.id"], ondelete="SET NULL"
-        ),
+        sa.ForeignKeyConstraint(["account_id"], ["account.id"], ondelete="SET NULL"),
         sa.ForeignKeyConstraint(
             ["expense_type_id"], ["expensetype.id"], ondelete="SET NULL"
         ),
-        sa.ForeignKeyConstraint(
-            ["merchant_id"], ["merchant.id"], ondelete="SET NULL"
-        ),
+        sa.ForeignKeyConstraint(["merchant_id"], ["merchant.id"], ondelete="SET NULL"),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index(
-        op.f("ix_transaction_id"), "transaction", ["id"], unique=False
-    )
+    op.create_index(op.f("ix_transaction_id"), "transaction", ["id"], unique=False)
     # ### end Alembic commands ###
 
 

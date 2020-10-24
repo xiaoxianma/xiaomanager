@@ -8,18 +8,14 @@ from sqlalchemy.orm import Session
 
 
 def get_user(db: Session, user_id: int):
-    user = (
-        db.query(user_model.User).filter(user_model.User.id == user_id).first()
-    )
+    user = db.query(user_model.User).filter(user_model.User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
 
 def get_user_by_email(db: Session, email: str) -> user_schema.UserBase:
-    return (
-        db.query(user_model.User).filter(user_model.User.email == email).first()
-    )
+    return db.query(user_model.User).filter(user_model.User.email == email).first()
 
 
 def get_users(
