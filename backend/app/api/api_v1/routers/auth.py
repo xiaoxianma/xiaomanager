@@ -9,7 +9,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 auth_router = r = APIRouter()
 
 
-@r.post("/token")
+@r.post("/token", summary="Refresh user token when login")
 async def login(db=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
     user = authenticate_user(db, form_data.username, form_data.password)
     if not user:
@@ -24,15 +24,11 @@ async def login(db=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depen
         permissions = "admin"
     else:
         permissions = "user"
-    access_token = security.create_access_token(
-        data={"sub": user.email, "permissions": permissions},
-        expires_delta=access_token_expires,
-    )
-
+    access_token = security.create_access_token(data={"sub": user.email, "permissions": permissions}, expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@r.post("/signup")
+@r.post("/signup", summary="Signup new non-super user")
 async def signup(db=Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
     user = sign_up_new_user(db, form_data.username, form_data.password)
     if not user:

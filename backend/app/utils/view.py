@@ -1,6 +1,7 @@
 import typing as t
 
 import app.db.crud.utils as crud_utils
+from app.core import security
 from app.db.session import Base, get_db
 from fastapi import APIRouter, FastAPI
 from fastapi.params import Depends
@@ -17,34 +18,35 @@ class ModelViewSet:
 
     def __init__(self):
         self.r = APIRouter()
+        self.oauth2_scheme = security.oauth2_scheme
 
     def register(self):
         @self.r.get(f"/{self.ENDPOINT}s", response_model=t.List[self.GET_SCHEMA_OUT])
-        async def get_all(db=Depends(get_db)):
+        async def get_all(token: str = Depends(self.oauth2_scheme), db=Depends(get_db)):
             return crud_utils.get_all_items(db, self.MODEL)
 
         @self.r.get(
             f"/{self.ENDPOINT}/" + "{inst_id}", response_model=self.GET_SCHEMA_OUT
         )
-        async def get(inst_id: int, db=Depends(get_db)):
+        async def get(inst_id: int, token: str = Depends(self.oauth2_scheme), db=Depends(get_db)):
             return crud_utils.get_item(db, self.MODEL, inst_id)
 
         @self.r.post(
             f"/{self.ENDPOINT}", response_model=self.GET_SCHEMA_OUT, status_code=201
         )
-        async def create(payload: self.POST_SCHEMA_IN, db=Depends(get_db)):
+        async def create(payload: self.POST_SCHEMA_IN, token: str = Depends(self.oauth2_scheme), db=Depends(get_db)):
             return crud_utils.create_item(db, self.MODEL, payload)
 
         @self.r.patch(
             f"/{self.ENDPOINT}/" + "{inst_id}", response_model=self.GET_SCHEMA_OUT
         )
         async def update(
-            inst_id: int, payload: self.POST_SCHEMA_IN, db=Depends(get_db)
+            inst_id: int, payload: self.POST_SCHEMA_IN, token: str = Depends(self.oauth2_scheme), db=Depends(get_db)
         ):
             return crud_utils.update_item(db, self.MODEL, inst_id, payload)
 
         @self.r.delete(f"/{self.ENDPOINT}/" + "{inst_id}", response_model=None)
-        async def delete(inst_id: int, db=Depends(get_db)):
+        async def delete(inst_id: int, token: str = Depends(self.oauth2_scheme), db=Depends(get_db)):
             return crud_utils.delete_item(db, self.MODEL, inst_id)
 
 
