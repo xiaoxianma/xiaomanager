@@ -13,6 +13,8 @@ class Institution(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True)
+    
+    accounts = relationship("Account", back_populates="institution")
 
 
 @generic_repr
@@ -21,6 +23,8 @@ class AccountOwner(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True)
+    
+    accounts = relationship("Account", back_populates="account_owner")
 
 
 class AccountType(enum.Enum):
@@ -44,8 +48,8 @@ class Account(Base):
     number = Column(String)
     alias = Column(String)
 
-    institution = relationship(Institution, backref="account")
-    account_owner = relationship(AccountOwner, backref="account")
+    institution = relationship("Institution", back_populates="accounts")
+    account_owner = relationship("AccountOwner", back_populates="accounts")
 
 
 @generic_repr
