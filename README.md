@@ -29,4 +29,4 @@ TODO
 ## Travel manager
 TODO
 
-## [Techniques](https://github.com/)
+## [Techniques](https://github.com/xiaoxianma/xiaomanager/blob/fastapi/TECHSTACK.md)
