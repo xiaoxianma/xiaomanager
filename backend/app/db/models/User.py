@@ -1,7 +1,9 @@
 from app.db.session import Base
 from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy_utils import generic_repr
 
 
+@generic_repr
 class User(Base):
     __tablename__ = "user"
 
