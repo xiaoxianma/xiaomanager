@@ -20,4 +20,4 @@ python-multipart==0.0.5
 pyjwt==1.7.1
 fastapi-utils==0.2.1
 black
-iosrt
+isort

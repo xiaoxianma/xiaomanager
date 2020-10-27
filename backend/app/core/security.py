@@ -68,7 +68,7 @@ class AuthDependency:
             headers={"WWW-Authenticate": authenticate_value},
         ) 
 
-    async def __call__(self, request: Request, security_scopes: SecurityScopes, return_token=False, db=Depends(session.get_db)):
+    async def __call__(self, request: Request, security_scopes: SecurityScopes, db=Depends(session.get_db)):
         from app.db.crud.user import get_user_by_email
         if not self.enabled:
             return None
@@ -89,4 +89,4 @@ class AuthDependency:
             self.raise_forbidden_exception(authenticate_value)
         if permission is None or permission not in ['admin', 'user']:
             self.raise_forbidden_exception(authenticate_value)
-        return user, token if return_token else user
+        return user

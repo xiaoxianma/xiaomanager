@@ -5,7 +5,6 @@ from app.core import security
 from app.db import session
 from app.db.crud.user import create_user, get_user_by_email
 from fastapi import Depends, HTTPException, status
-from jwt import PyJWTError
 
 
 async def get_current_user(
@@ -25,7 +24,7 @@ async def get_current_user(
             raise credentials_exception
         permissions: str = payload.get("permissions")
         token_data = user_schema.TokenData(email=email, permissions=permissions)
-    except PyJWTError:
+    except jwt.PyJWTError:
         raise credentials_exception
     user = get_user_by_email(db, token_data.email)
     if user is None:
