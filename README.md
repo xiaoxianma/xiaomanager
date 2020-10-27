@@ -29,4 +29,4 @@ TODO
 ## Travel manager
 TODO
 
-## [Development Guide](https://github.com/xiaoxianma/xiaomanager/blob/fastapi/TECHSTACK.md)
+## [Development Guide](https://github.com/xiaoxianma/xiaomanager/blob/fastapi/DEVELOPMENT_GUIDE.md)
