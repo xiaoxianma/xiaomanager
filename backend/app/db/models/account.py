@@ -13,7 +13,7 @@ class Institution(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True)
-    
+
     accounts = relationship("Account", back_populates="institution")
 
 
@@ -23,7 +23,7 @@ class AccountOwner(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True)
-    
+
     accounts = relationship("Account", back_populates="account_owner")
 
 
@@ -41,9 +41,7 @@ class Account(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     institution_id = Column(Integer, ForeignKey("institution.id", ondelete="SET NULL"))
-    account_owner_id = Column(
-        Integer, ForeignKey("accountowner.id", ondelete="SET NULL")
-    )
+    account_owner_id = Column(Integer, ForeignKey("accountowner.id", ondelete="SET NULL"))
     account_type = Column(Enum(AccountType))
     number = Column(String)
     alias = Column(String)

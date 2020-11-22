@@ -12,7 +12,7 @@ format:
 	isort .
 
 test:
-	pytest tests/
+	cd backend/ && pytest
 
 migrate:
 	cd backend/ && alembic upgrade head

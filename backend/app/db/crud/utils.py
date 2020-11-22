@@ -1,5 +1,3 @@
-import typing as t
-
 from app.db.session import Base
 from fastapi.exceptions import HTTPException
 from pydantic import BaseModel

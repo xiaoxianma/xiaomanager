@@ -2,7 +2,6 @@ import sys
 
 sys.path.insert(0, "../")
 import uvicorn
-from app import tasks
 from app.api.api_v1.routers import route as route_v1
 from app.api.api_v1.routers.auth import auth_router
 from app.api.api_v1.routers.users import users_router

@@ -40,6 +40,6 @@ class Transaction(Base):
 
     account = relationship(Account, backref="transaction")
     merchant = relationship(Merchant, backref="transaction")
-    expense_type =  relationship(ExpenseType, backref="transaction")
+    expense_type = relationship(ExpenseType, backref="transaction")
 
     __table_args__ = (CheckConstraint(coupon > 0, name="check_coupon_positive"),)

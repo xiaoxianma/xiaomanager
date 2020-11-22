@@ -2,7 +2,7 @@ import typing as t
 
 import pytest
 from app.core import config, security
-from app.db import models
+from app.db.models.user import User as ModelUser
 from app.db.session import Base, get_db
 from app.main import app
 from fastapi.testclient import TestClient
@@ -57,9 +57,7 @@ def create_test_db():
     test_db_url = get_test_db_url()
 
     # Create the test database
-    assert not database_exists(
-        test_db_url
-    ), "Test database already exists. Aborting tests."
+    assert not database_exists(test_db_url), "Test database already exists. Aborting tests."
     create_database(test_db_url)
     test_engine = create_engine(test_db_url)
     Base.metadata.create_all(test_engine)
@@ -98,12 +96,12 @@ def get_password_hash() -> str:
 
 
 @pytest.fixture
-def test_user(test_db) -> models.User:
+def test_user(test_db) -> ModelUser:
     """
     Make a test user in the database
     """
 
-    user = models.User(
+    user = ModelUser(
         email="fake@email.com",
         hashed_password=get_password_hash(),
         is_active=True,
@@ -114,12 +112,12 @@ def test_user(test_db) -> models.User:
 
 
 @pytest.fixture
-def test_superuser(test_db) -> models.User:
+def test_superuser(test_db) -> ModelUser:
     """
     Superuser for testing
     """
 
-    user = models.User(
+    user = ModelUser(
         email="fakeadmin@email.com",
         hashed_password=get_password_hash(),
         is_superuser=True,
@@ -134,9 +132,7 @@ def verify_password_mock(first: str, second: str) -> bool:
 
 
 @pytest.fixture
-def user_token_headers(
-    client: TestClient, test_user, test_password, monkeypatch
-) -> t.Dict[str, str]:
+def user_token_headers(client: TestClient, test_user, test_password, monkeypatch) -> t.Dict[str, str]:
     monkeypatch.setattr(security, "verify_password", verify_password_mock)
 
     login_data = {
@@ -151,9 +147,7 @@ def user_token_headers(
 
 
 @pytest.fixture
-def superuser_token_headers(
-    client: TestClient, test_superuser, test_password, monkeypatch
-) -> t.Dict[str, str]:
+def superuser_token_headers(client: TestClient, test_superuser, test_password, monkeypatch) -> t.Dict[str, str]:
     monkeypatch.setattr(security, "verify_password", verify_password_mock)
 
     login_data = {

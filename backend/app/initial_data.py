@@ -5,7 +5,7 @@ sys.path.insert(0, ".")
 
 from app.db.crud.user import create_user
 from app.db.schemas.user import UserCreate
-from app.db.session import SessionLocal, get_db
+from app.db.session import SessionLocal
 
 
 def init() -> None:

@@ -1,7 +1,7 @@
 """init
 
 Revision ID: 4658cd0039dd
-Revises: 
+Revises:
 Create Date: 2020-10-19 21:15:08.723034-07:00
 
 """
@@ -94,12 +94,8 @@ def upgrade():
         ),
         sa.Column("number", sa.String(), nullable=True),
         sa.Column("alias", sa.String(), nullable=True),
-        sa.ForeignKeyConstraint(
-            ["account_owner_id"], ["accountowner.id"], ondelete="SET NULL"
-        ),
-        sa.ForeignKeyConstraint(
-            ["institution_id"], ["institution.id"], ondelete="SET NULL"
-        ),
+        sa.ForeignKeyConstraint(["account_owner_id"], ["accountowner.id"], ondelete="SET NULL"),
+        sa.ForeignKeyConstraint(["institution_id"], ["institution.id"], ondelete="SET NULL"),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_account_id"), "account", ["id"], unique=False)
@@ -114,9 +110,7 @@ def upgrade():
         sa.Column("description", sa.Text(), nullable=True),
         sa.CheckConstraint("xpoints > 0", name="check_xponits_positive"),
         sa.ForeignKeyConstraint(["account_id"], ["account.id"], ondelete="SET NULL"),
-        sa.ForeignKeyConstraint(
-            ["reward_type_id"], ["rewardtype.id"], ondelete="SET NULL"
-        ),
+        sa.ForeignKeyConstraint(["reward_type_id"], ["rewardtype.id"], ondelete="SET NULL"),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_reward_id"), "reward", ["id"], unique=False)
@@ -134,9 +128,7 @@ def upgrade():
         sa.Column("created", sa.DateTime(timezone=True), nullable=False),
         sa.CheckConstraint("coupon > 0", name="check_coupon_positive"),
         sa.ForeignKeyConstraint(["account_id"], ["account.id"], ondelete="SET NULL"),
-        sa.ForeignKeyConstraint(
-            ["expense_type_id"], ["expensetype.id"], ondelete="SET NULL"
-        ),
+        sa.ForeignKeyConstraint(["expense_type_id"], ["expensetype.id"], ondelete="SET NULL"),
         sa.ForeignKeyConstraint(["merchant_id"], ["merchant.id"], ondelete="SET NULL"),
         sa.PrimaryKeyConstraint("id"),
     )

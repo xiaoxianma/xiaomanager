@@ -1,4 +1,3 @@
-import os
 import sys
 from logging.config import fileConfig
 
@@ -20,9 +19,6 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-from app.db.models.account import Base
-from app.db.models.transaction import Base
-from app.db.models.user import Base
 from app.db.session import Base
 
 # from app.db.models.account import Base as AccountBase

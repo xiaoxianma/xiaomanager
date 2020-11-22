@@ -11,12 +11,12 @@ from passlib.context import CryptContext
 
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/api/token",
-    scopes= {
+    scopes={
         "server_management": "Edit server settings",
         "token_management": "Create, list or edit tokens",
         "notification_management": "Create, list or edit notification providers",
         "full_control": "Full control over what current user has",
-    }
+    },
 )
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -49,7 +49,6 @@ def create_access_token(*, data: dict, expires_delta: timedelta = None):
 
 
 class AuthDependency:
-
     def __init__(self, enabled: bool = True, token: t.Optional[str] = None):
         self.enabled = enabled
         self.token = token
@@ -59,17 +58,23 @@ class AuthDependency:
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": authenticate_value},
-        ) 
+        )
 
     def raise_forbidden_exception(self, authenticate_value):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not enough permissions",
             headers={"WWW-Authenticate": authenticate_value},
-        ) 
+        )
 
-    async def __call__(self, request: Request, security_scopes: SecurityScopes, db=Depends(session.get_db)):
+    async def __call__(
+        self,
+        request: Request,
+        security_scopes: SecurityScopes,
+        db=Depends(session.get_db),
+    ):
         from app.db.crud.user import get_user_by_email
+
         if not self.enabled:
             return None
         if security_scopes.scopes:
@@ -77,16 +82,17 @@ class AuthDependency:
         else:
             authenticate_value = "Bearer"
         token: str = await oauth2_scheme(request) if not self.token else self.token
-        if token is None: self.raise_unauthorized_exception(authenticate_value)
+        if token is None:
+            self.raise_unauthorized_exception(authenticate_value)
         try:
             payload = jwt.decode(token, security.SECRET_KEY, algorithm=[security.ALGORITHM])
-        except (jwt.PyJWTError, jwt.ExpiredSignatureError) as e:
+        except (jwt.PyJWTError, jwt.ExpiredSignatureError):
             self.raise_unauthorized_exception(authenticate_value)
-        email: str = payload.get('sub')
-        permission: str = payload.get('permissions')
+        email: str = payload.get("sub")
+        permission: str = payload.get("permissions")
         user = get_user_by_email(db, email)
         if user is None:
             self.raise_forbidden_exception(authenticate_value)
-        if permission is None or permission not in ['admin', 'user']:
+        if permission is None or permission not in ["admin", "user"]:
             self.raise_forbidden_exception(authenticate_value)
         return user
